@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.mapper.ProjectMembersMapper">
+    
+    <resultMap type="ProjectMembers" id="ProjectMembersResult">
+        <result property="memberId"    column="member_id"    />
+        <result property="projectId"    column="project_id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="role"    column="role"    />
+        <result property="joinedAt"    column="joined_at"    />
+    </resultMap>
+
+    <sql id="selectProjectMembersVo">
+        select member_id, project_id, user_id, role, joined_at from project_members
+    </sql>
+
+    <select id="selectProjectMembersList" parameterType="ProjectMembers" resultMap="ProjectMembersResult">
+        <include refid="selectProjectMembersVo"/>
+        <where>  
+            <if test="projectId != null "> and project_id = #{projectId}</if>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="role != null  and role != ''"> and role = #{role}</if>
+            <if test="joinedAt != null "> and joined_at = #{joinedAt}</if>
+        </where>
+    </select>
+    
+    <select id="selectProjectMembersByMemberId" parameterType="Long" resultMap="ProjectMembersResult">
+        <include refid="selectProjectMembersVo"/>
+        where member_id = #{memberId}
+    </select>
+
+    <insert id="insertProjectMembers" parameterType="ProjectMembers" useGeneratedKeys="true" keyProperty="memberId">
+        insert into project_members
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="projectId != null">project_id,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="role != null">role,</if>
+            <if test="joinedAt != null">joined_at,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="projectId != null">#{projectId},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="role != null">#{role},</if>
+            <if test="joinedAt != null">#{joinedAt},</if>
+         </trim>
+    </insert>
+
+    <update id="updateProjectMembers" parameterType="ProjectMembers">
+        update project_members
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="projectId != null">project_id = #{projectId},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="role != null">role = #{role},</if>
+            <if test="joinedAt != null">joined_at = #{joinedAt},</if>
+        </trim>
+        where member_id = #{memberId}
+    </update>
+
+    <delete id="deleteProjectMembersByMemberId" parameterType="Long">
+        delete from project_members where member_id = #{memberId}
+    </delete>
+
+    <delete id="deleteProjectMembersByMemberIds" parameterType="String">
+        delete from project_members where member_id in 
+        <foreach item="memberId" collection="array" open="(" separator="," close=")">
+            #{memberId}
+        </foreach>
+    </delete>
+</mapper>

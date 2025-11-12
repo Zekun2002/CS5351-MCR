@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.progress.mapper.ProgressReportsMapper">
+    
+    <resultMap type="ProgressReports" id="ProgressReportsResult">
+        <result property="reportId"    column="report_id"    />
+        <result property="projectId"    column="project_id"    />
+        <result property="reportDate"    column="report_date"    />
+        <result property="progress"    column="progress"    />
+        <result property="expectedEndDate"    column="expected_end_date"    />
+        <result property="actualEndDate"    column="actual_end_date"    />
+    </resultMap>
+
+    <sql id="selectProgressReportsVo">
+        select report_id, project_id, report_date, progress, expected_end_date, actual_end_date from progress_reports
+    </sql>
+
+    <select id="selectProgressReportsList" parameterType="ProgressReports" resultMap="ProgressReportsResult">
+        <include refid="selectProgressReportsVo"/>
+        <where>  
+            <if test="projectId != null "> and project_id = #{projectId}</if>
+            <if test="reportDate != null "> and report_date = #{reportDate}</if>
+            <if test="progress != null "> and progress = #{progress}</if>
+            <if test="expectedEndDate != null "> and expected_end_date = #{expectedEndDate}</if>
+            <if test="actualEndDate != null "> and actual_end_date = #{actualEndDate}</if>
+        </where>
+    </select>
+    
+    <select id="selectProgressReportsByReportId" parameterType="Long" resultMap="ProgressReportsResult">
+        <include refid="selectProgressReportsVo"/>
+        where report_id = #{reportId}
+    </select>
+
+    <insert id="insertProgressReports" parameterType="ProgressReports" useGeneratedKeys="true" keyProperty="reportId">
+        insert into progress_reports
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="projectId != null">project_id,</if>
+            <if test="reportDate != null">report_date,</if>
+            <if test="progress != null">progress,</if>
+            <if test="expectedEndDate != null">expected_end_date,</if>
+            <if test="actualEndDate != null">actual_end_date,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="projectId != null">#{projectId},</if>
+            <if test="reportDate != null">#{reportDate},</if>
+            <if test="progress != null">#{progress},</if>
+            <if test="expectedEndDate != null">#{expectedEndDate},</if>
+            <if test="actualEndDate != null">#{actualEndDate},</if>
+         </trim>
+    </insert>
+
+    <update id="updateProgressReports" parameterType="ProgressReports">
+        update progress_reports
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="projectId != null">project_id = #{projectId},</if>
+            <if test="reportDate != null">report_date = #{reportDate},</if>
+            <if test="progress != null">progress = #{progress},</if>
+            <if test="expectedEndDate != null">expected_end_date = #{expectedEndDate},</if>
+            <if test="actualEndDate != null">actual_end_date = #{actualEndDate},</if>
+        </trim>
+        where report_id = #{reportId}
+    </update>
+
+    <delete id="deleteProgressReportsByReportId" parameterType="Long">
+        delete from progress_reports where report_id = #{reportId}
+    </delete>
+
+    <delete id="deleteProgressReportsByReportIds" parameterType="String">
+        delete from progress_reports where report_id in 
+        <foreach item="reportId" collection="array" open="(" separator="," close=")">
+            #{reportId}
+        </foreach>
+    </delete>
+</mapper>
