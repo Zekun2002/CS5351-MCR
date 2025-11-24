@@ -61,10 +61,15 @@
             <artifactId>ruoyi-generator</artifactId>
         </dependency>
 
+
         <dependency>
             <groupId>com.ruoyi</groupId>
-            <artifactId>ruoyi-software</artifactId>
-            <version>${ruoyi.version}</version>
+            <artifactId>ruoyi-project</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.ruoyi</groupId>
+            <artifactId>ruoyi-progress</artifactId>
         </dependency>
 
     </dependencies>
