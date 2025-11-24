@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.software.mapper.IssueMapper">
+    
+    <resultMap type="Issue" id="IssueResult">
+        <result property="issueId"    column="issue_id"    />
+        <result property="projectId"    column="project_id"    />
+        <result property="taskId"    column="task_id"    />
+        <result property="issueType"    column="issue_type"    />
+        <result property="description"    column="description"    />
+        <result property="status"    column="status"    />
+        <result property="createdBy"    column="created_by"    />
+        <result property="createdAt"    column="created_at"    />
+        <result property="updatedAt"    column="updated_at"    />
+    </resultMap>
+
+    <sql id="selectIssueVo">
+        select issue_id, project_id, task_id, issue_type, description, status, created_by, created_at, updated_at from issues
+    </sql>
+
+    <select id="selectIssueList" parameterType="Issue" resultMap="IssueResult">
+        <include refid="selectIssueVo"/>
+        <where>  
+            <if test="projectId != null "> and project_id = #{projectId}</if>
+            <if test="taskId != null "> and task_id = #{taskId}</if>
+            <if test="issueType != null  and issueType != ''"> and issue_type = #{issueType}</if>
+            <if test="description != null  and description != ''"> and description = #{description}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+            <if test="createdBy != null "> and created_by = #{createdBy}</if>
+            <if test="createdAt != null "> and created_at = #{createdAt}</if>
+            <if test="updatedAt != null "> and updated_at = #{updatedAt}</if>
+        </where>
+    </select>
+    
+    <select id="selectIssueByIssueId" parameterType="Long" resultMap="IssueResult">
+        <include refid="selectIssueVo"/>
+        where issue_id = #{issueId}
+    </select>
+
+    <insert id="insertIssue" parameterType="Issue" useGeneratedKeys="true" keyProperty="issueId">
+        insert into issues
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="projectId != null">project_id,</if>
+            <if test="taskId != null">task_id,</if>
+            <if test="issueType != null">issue_type,</if>
+            <if test="description != null">description,</if>
+            <if test="status != null">status,</if>
+            <if test="createdBy != null">created_by,</if>
+            <if test="createdAt != null">created_at,</if>
+            <if test="updatedAt != null">updated_at,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="projectId != null">#{projectId},</if>
+            <if test="taskId != null">#{taskId},</if>
+            <if test="issueType != null">#{issueType},</if>
+            <if test="description != null">#{description},</if>
+            <if test="status != null">#{status},</if>
+            <if test="createdBy != null">#{createdBy},</if>
+            <if test="createdAt != null">#{createdAt},</if>
+            <if test="updatedAt != null">#{updatedAt},</if>
+         </trim>
+    </insert>
+
+    <update id="updateIssue" parameterType="Issue">
+        update issues
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="projectId != null">project_id = #{projectId},</if>
+            <if test="taskId != null">task_id = #{taskId},</if>
+            <if test="issueType != null">issue_type = #{issueType},</if>
+            <if test="description != null">description = #{description},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="createdBy != null">created_by = #{createdBy},</if>
+            <if test="createdAt != null">created_at = #{createdAt},</if>
+            <if test="updatedAt != null">updated_at = #{updatedAt},</if>
+        </trim>
+        where issue_id = #{issueId}
+    </update>
+
+    <delete id="deleteIssueByIssueId" parameterType="Long">
+        delete from issues where issue_id = #{issueId}
+    </delete>
+
+    <delete id="deleteIssueByIssueIds" parameterType="String">
+        delete from issues where issue_id in 
+        <foreach item="issueId" collection="array" open="(" separator="," close=")">
+            #{issueId}
+        </foreach>
+    </delete>
+</mapper>
