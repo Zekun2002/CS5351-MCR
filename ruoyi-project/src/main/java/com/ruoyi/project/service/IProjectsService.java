@@ -27,6 +27,19 @@ public interface IProjectsService
      */
     public List<Projects> selectProjectsList(Projects projects);
 
+
+
+    /**
+     * ###################################
+     * 暂定：查询所有项目id
+     *
+     * @param projects 项目管理
+     * @return 项目管理集合
+     */
+    public List<Long> selectProjectsIdList(Projects projects);
+
+
+
     /**
      * 新增项目管理
      * 

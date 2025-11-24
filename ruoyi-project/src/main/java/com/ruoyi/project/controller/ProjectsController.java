@@ -2,6 +2,8 @@ package com.ruoyi.project.controller;
 
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
+
+import com.ruoyi.common.utils.SecurityUtils;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -77,6 +79,8 @@ public class ProjectsController extends BaseController
     @PostMapping
     public AjaxResult add(@RequestBody Projects projects)
     {
+        projects.setCreatedBy(SecurityUtils.getUserId());
+
         return toAjax(projectsService.insertProjects(projects));
     }
 

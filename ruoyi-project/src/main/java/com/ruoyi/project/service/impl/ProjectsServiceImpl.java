@@ -1,5 +1,6 @@
 package com.ruoyi.project.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -41,6 +42,16 @@ public class ProjectsServiceImpl implements IProjectsService
     public List<Projects> selectProjectsList(Projects projects)
     {
         return projectsMapper.selectProjectsList(projects);
+    }
+
+    @Override
+    public List<Long> selectProjectsIdList(Projects projects) {
+        List<Projects> projectsList =projectsMapper.selectProjectsList(projects);
+        List<Long> projectsIds = new ArrayList<Long>();
+        for(int i=0;i<projectsList.size();i++){
+            projectsIds.add(projectsList.get(i).getProjectId());
+        }
+        return projectsIds;
     }
 
     /**
