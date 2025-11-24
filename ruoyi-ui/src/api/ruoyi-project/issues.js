@@ -1,0 +1,44 @@
+import request from '@/utils/request'
+
+// 查询问题管理列表
+export function listIssues(query) {
+  return request({
+    url: '/ruoyi-project/issues/list',
+    method: 'get',
+    params: query
+  })
+}
+
+// 查询问题管理详细
+export function getIssues(issueId) {
+  return request({
+    url: '/ruoyi-project/issues/' + issueId,
+    method: 'get'
+  })
+}
+
+// 新增问题管理
+export function addIssues(data) {
+  return request({
+    url: '/ruoyi-project/issues',
+    method: 'post',
+    data: data
+  })
+}
+
+// 修改问题管理
+export function updateIssues(data) {
+  return request({
+    url: '/ruoyi-project/issues',
+    method: 'put',
+    data: data
+  })
+}
+
+// 删除问题管理
+export function delIssues(issueId) {
+  return request({
+    url: '/ruoyi-project/issues/' + issueId,
+    method: 'delete'
+  })
+}
