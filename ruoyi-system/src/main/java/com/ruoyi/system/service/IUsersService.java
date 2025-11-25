@@ -58,4 +58,6 @@ public interface IUsersService
      * @return 结果
      */
     public int deleteUsersByUserId(Long userId);
+
+    public List<Long> selectUserIdList();
 }

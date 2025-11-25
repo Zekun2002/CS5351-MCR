@@ -58,4 +58,6 @@ public interface UsersMapper
      * @return 结果
      */
     public int deleteUsersByUserIds(Long[] userIds);
+
+    public List<Long> selectUserIdList();
 }

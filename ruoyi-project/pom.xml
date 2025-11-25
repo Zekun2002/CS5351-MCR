@@ -11,14 +11,20 @@
 
     <artifactId>ruoyi-project</artifactId>
 
-    <dependencies>
+  <dependencies>
 
-        <dependency>
-            <groupId>com.ruoyi</groupId>
-            <artifactId>ruoyi-common</artifactId>
-        </dependency>
+    <dependency>
+      <groupId>com.ruoyi</groupId>
+      <artifactId>ruoyi-common</artifactId>
+    </dependency>
 
-    </dependencies>
+    <dependency>
+      <groupId>com.ruoyi</groupId>
+      <artifactId>ruoyi-system</artifactId>
+      <version>${ruoyi.version}</version>
+    </dependency>
+
+  </dependencies>
 
 
     <properties>

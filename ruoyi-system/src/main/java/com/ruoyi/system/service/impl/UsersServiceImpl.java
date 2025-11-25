@@ -90,4 +90,10 @@ public class UsersServiceImpl implements IUsersService
     {
         return usersMapper.deleteUsersByUserId(userId);
     }
+
+    @Override
+    public List<Long> selectUserIdList()
+    {
+        return usersMapper.selectUserIdList();
+    }
 }
