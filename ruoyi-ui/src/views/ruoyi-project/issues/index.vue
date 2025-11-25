@@ -143,24 +143,44 @@
     <!-- 添加或修改问题对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="问题所属项目ID" prop="projectId">
+        <!-- <el-form-item label="问题所属项目ID" prop="projectId">
           <el-input v-model="form.projectId" placeholder="请输入问题所属项目ID" />
+        </el-form-item> -->
+        <el-form-item label="问题所属项目ID" prop="projectId">
+          <el-select v-model="form.projectId" placeholder="请输入问题所属任务ID" >
+            <el-option
+              v-for="item in projectIds"
+              :key="item.projectId"
+              :label="item.projectName"
+              :value="item.projectId">
+            </el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="问题所属任务ID" prop="taskId">
           <el-select v-model="form.taskId" placeholder="请输入问题所属任务ID" >
             <el-option
               v-for="item in taskIds"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value">
+              :key="item.taskId"
+              :label="item.taskName"
+              :value="item.taskId">
             </el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="问题描述" prop="description">
           <el-input v-model="form.description" type="textarea" placeholder="请输入内容" />
         </el-form-item>
-        <el-form-item label="创建问题的用户ID" prop="createdBy">
+        <!-- <el-form-item label="创建问题的用户ID" prop="createdBy">
           <el-input v-model="form.createdBy" placeholder="请输入创建问题的用户ID" />
+        </el-form-item> -->
+        <el-form-item label="问题所属用户ID" prop="userId">
+          <el-select v-model="form.userId" placeholder="请输入问题所属用户ID" >
+            <el-option
+              v-for="item in userIds"
+              :key="item.userId"
+              :label="item.userName"
+              :value="item.userId">
+            </el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="问题创建时间" prop="createdAt">
           <el-date-picker clearable
@@ -231,7 +251,11 @@ export default {
       rules: {
       },
       // 用于存放获取的任务id列表
-      taskIds:[{value:3,label:2},{value:2,label:3},{value:1,label:1}],
+      taskIds:[],
+      // 用于存放获取的项目id列表
+      projectIds:[],
+      // 用于存放获取的用户id列表
+      useIds:[]
     };
   },
   created() {
@@ -285,9 +309,23 @@ export default {
     },
     /** 新增按钮操作 */
     handleAdd() {
-      // getConnectionData().then(response => {
-        
-      // });
+      getConnectionData().then(response => {
+          this.taskIds = response.data.task_ids
+          this.taskIds.map(function(item){
+            item.taskName = item.taskId + "\t" + item.taskName
+            return item
+          })
+          this.projectIds = response.data.project_ids
+          this.projectIds.map(function(item){
+            item.projectName = item.projectId + "\t" + item.projectName
+            return item
+          })
+          this.userIds = response.data.user_ids
+          this.userIds.map(function(item){
+            item.userName = item.userId + "\t" + item.userName
+            return item
+          })
+      });
       this.reset();
       this.open = true;
       this.title = "添加问题";

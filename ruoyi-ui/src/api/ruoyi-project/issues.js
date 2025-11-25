@@ -46,7 +46,7 @@ export function delIssues(issueId) {
 // 获取关联数据
 export function getConnectionData(){
   return request({
-    url: "111",
+    url: "/ruoyi-project/issues/allIds",
     method: 'get'
   })
 }
