@@ -4,6 +4,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.system.mapper.UsersMapper;
+import com.ruoyi.system.mapper.UserRolesMapper;
 import com.ruoyi.system.domain.Users;
 import com.ruoyi.system.service.IUsersService;
 
@@ -18,6 +19,9 @@ public class UsersServiceImpl implements IUsersService
 {
     @Autowired
     private UsersMapper usersMapper;
+
+    @Autowired
+    private UserRolesMapper userRolesMapper;
 
     /**
      * 查询用户信息
@@ -95,5 +99,15 @@ public class UsersServiceImpl implements IUsersService
     public List<Long> selectUserIdList()
     {
         return usersMapper.selectUserIdList();
+    }
+
+    @Override
+    public int assignRoles(Long userId, List<Long> roleIds)
+    {
+        userRolesMapper.deleteByUserId(userId);
+        if (roleIds == null || roleIds.isEmpty()) {
+            return 1;
+        }
+        return userRolesMapper.batchInsert(userId, roleIds);
     }
 }

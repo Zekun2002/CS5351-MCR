@@ -2,6 +2,7 @@ package com.ruoyi.system.mapper;
 
 import java.util.List;
 import com.ruoyi.system.domain.UserRoles;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 用户角色关联Mapper接口
@@ -58,4 +59,8 @@ public interface UserRolesMapper
      * @return 结果
      */
     public int deleteUserRolesByUserRoleIds(Long[] userRoleIds);
+
+    int deleteByUserId(@Param("userId") Long userId);
+
+    int batchInsert(@Param("userId") Long userId, @Param("roleIds") List<Long> roleIds);
 }

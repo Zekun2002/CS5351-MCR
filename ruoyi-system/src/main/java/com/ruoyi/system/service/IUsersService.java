@@ -60,4 +60,6 @@ public interface IUsersService
     public int deleteUsersByUserId(Long userId);
 
     public List<Long> selectUserIdList();
+
+    int assignRoles(Long userId, List<Long> roleIds);
 }
