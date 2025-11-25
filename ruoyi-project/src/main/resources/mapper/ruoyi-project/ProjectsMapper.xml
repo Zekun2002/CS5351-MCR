@@ -1,37 +1,40 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ruoyi.project.mapper.ProjectsMapper">
-    
+
     <resultMap type="Projects" id="ProjectsResult">
-        <result property="projectId"    column="project_id"    />
-        <result property="projectName"    column="project_name"    />
-        <result property="description"    column="description"    />
-        <result property="startDate"    column="start_date"    />
-        <result property="endDate"    column="end_date"    />
-        <result property="createdBy"    column="created_by"    />
-        <result property="createdAt"    column="created_at"    />
-        <result property="updatedAt"    column="updated_at"    />
+        <result property="projectId" column="project_id"/>
+        <result property="projectName" column="project_name"/>
+        <result property="description" column="description"/>
+        <result property="startDate" column="start_date"/>
+        <result property="endDate" column="end_date"/>
+        <result property="createdBy" column="created_by"/>
+        <result property="createdAt" column="created_at"/>
+        <result property="updatedAt" column="updated_at"/>
     </resultMap>
 
     <sql id="selectProjectsVo">
-        select project_id, project_name, description, start_date, end_date, created_by, created_at, updated_at from projects
+        select project_id, project_name, description, start_date, end_date, created_by, created_at, updated_at from
+        projects
     </sql>
 
     <select id="selectProjectsList" parameterType="Projects" resultMap="ProjectsResult">
         <include refid="selectProjectsVo"/>
-        <where>  
-            <if test="projectName != null  and projectName != ''"> and project_name like concat('%', #{projectName}, '%')</if>
-            <if test="description != null  and description != ''"> and description = #{description}</if>
-            <if test="startDate != null "> and start_date = #{startDate}</if>
-            <if test="endDate != null "> and end_date = #{endDate}</if>
-            <if test="createdBy != null "> and created_by = #{createdBy}</if>
-            <if test="createdAt != null "> and created_at = #{createdAt}</if>
-            <if test="updatedAt != null "> and updated_at = #{updatedAt}</if>
+        <where>
+            <if test="projectName != null  and projectName != ''">and project_name like concat('%', #{projectName},
+                '%')
+            </if>
+            <if test="description != null  and description != ''">and description = #{description}</if>
+            <if test="startDate != null ">and start_date = #{startDate}</if>
+            <if test="endDate != null ">and end_date = #{endDate}</if>
+            <if test="createdBy != null ">and created_by = #{createdBy}</if>
+            <if test="createdAt != null ">and created_at = #{createdAt}</if>
+            <if test="updatedAt != null ">and updated_at = #{updatedAt}</if>
         </where>
     </select>
-    
+
     <select id="selectProjectsByProjectId" parameterType="Long" resultMap="ProjectsResult">
         <include refid="selectProjectsVo"/>
         where project_id = #{projectId}
@@ -47,7 +50,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="createdBy != null">created_by,</if>
             <if test="createdAt != null">created_at,</if>
             <if test="updatedAt != null">updated_at,</if>
-         </trim>
+        </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="projectName != null">#{projectName},</if>
             <if test="description != null">#{description},</if>
@@ -56,7 +59,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="createdBy != null">#{createdBy},</if>
             <if test="createdAt != null">#{createdAt},</if>
             <if test="updatedAt != null">#{updatedAt},</if>
-         </trim>
+        </trim>
     </insert>
 
     <update id="updateProjects" parameterType="Projects">
@@ -78,9 +81,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </delete>
 
     <delete id="deleteProjectsByProjectIds" parameterType="String">
-        delete from projects where project_id in 
+        delete from projects where project_id in
         <foreach item="projectId" collection="array" open="(" separator="," close=")">
             #{projectId}
         </foreach>
     </delete>
+
+    <select id="selectProjectsIdList" resultMap="ProjectsResult">
+        select project_id, project_name from projects
+    </select>
+
 </mapper>

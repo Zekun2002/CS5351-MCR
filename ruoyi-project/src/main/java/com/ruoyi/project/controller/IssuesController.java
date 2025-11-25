@@ -1,9 +1,15 @@
 package com.ruoyi.project.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
 
+import com.ruoyi.common.core.domain.BaseEntity;
 import com.ruoyi.project.service.IProjectsService;
+import com.ruoyi.project.service.ITasksService;
+import com.ruoyi.system.domain.Users;
+import com.ruoyi.system.service.IUsersService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,6 +44,12 @@ public class IssuesController extends BaseController {
     @Autowired
     private IProjectsService projectsService;
 
+    @Autowired
+    private ITasksService tasksService;
+
+    @Autowired
+    private IUsersService usersService;
+
     /**
      * 查询问题列表
      */
@@ -47,6 +59,20 @@ public class IssuesController extends BaseController {
         startPage();
         List<Issues> list = issuesService.selectIssuesList(issues);
         return getDataTable(list);
+    }
+
+    /**
+     * 查询项目 & 任务 & 用户ID
+     */
+    @PreAuthorize("@ss.hasPermi('ruoyi-project:issues:query')")
+    @GetMapping("/allIds")
+    public AjaxResult allIds() {
+        Map<String, List<? extends BaseEntity>> idsMap = new HashMap<String, List<? extends BaseEntity>>() {{
+            put("project_ids", projectsService.selectProjectsIdList());
+            put("task_ids", tasksService.selectTasksIdList());
+            put("user_ids", usersService.selectUsersIdList());
+        }};
+        return success(idsMap);
     }
 
     /**
