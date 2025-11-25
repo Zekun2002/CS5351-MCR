@@ -147,7 +147,14 @@
           <el-input v-model="form.projectId" placeholder="请输入问题所属项目ID" />
         </el-form-item>
         <el-form-item label="问题所属任务ID" prop="taskId">
-          <el-input v-model="form.taskId" placeholder="请输入问题所属任务ID" />
+          <el-select v-model="form.taskId" placeholder="请输入问题所属任务ID" >
+            <el-option
+              v-for="item in taskIds"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="问题描述" prop="description">
           <el-input v-model="form.description" type="textarea" placeholder="请输入内容" />
@@ -181,7 +188,7 @@
 </template>
 
 <script>
-import { listIssues, getIssues, delIssues, addIssues, updateIssues } from "@/api/ruoyi-project/issues";
+import { listIssues, getIssues, delIssues, addIssues, updateIssues,getConnectionData } from "@/api/ruoyi-project/issues";
 
 export default {
   name: "Issues",
@@ -222,7 +229,9 @@ export default {
       form: {},
       // 表单校验
       rules: {
-      }
+      },
+      // 用于存放获取的任务id列表
+      taskIds:[{value:3,label:2},{value:2,label:3},{value:1,label:1}],
     };
   },
   created() {
@@ -276,6 +285,9 @@ export default {
     },
     /** 新增按钮操作 */
     handleAdd() {
+      // getConnectionData().then(response => {
+        
+      // });
       this.reset();
       this.open = true;
       this.title = "添加问题";

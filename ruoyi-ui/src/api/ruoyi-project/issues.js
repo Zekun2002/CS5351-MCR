@@ -42,3 +42,11 @@ export function delIssues(issueId) {
     method: 'delete'
   })
 }
+
+// 获取关联数据
+export function getConnectionData(){
+  return request({
+    url: "111",
+    method: 'get'
+  })
+}
