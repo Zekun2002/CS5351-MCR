@@ -140,7 +140,7 @@
       @pagination="getList"
     />
 
-    <!-- 添加或修改问题管理对话框 -->
+    <!-- 添加或修改问题对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-form-item label="问题所属项目ID" prop="projectId">
@@ -199,7 +199,7 @@ export default {
       showSearch: true,
       // 总条数
       total: 0,
-      // 问题管理表格数据
+      // 问题表格数据
       issuesList: [],
       // 弹出层标题
       title: "",
@@ -229,7 +229,7 @@ export default {
     this.getList();
   },
   methods: {
-    /** 查询问题管理列表 */
+    /** 查询问题列表 */
     getList() {
       this.loading = true;
       listIssues(this.queryParams).then(response => {
@@ -278,7 +278,7 @@ export default {
     handleAdd() {
       this.reset();
       this.open = true;
-      this.title = "添加问题管理";
+      this.title = "添加问题";
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
@@ -287,7 +287,7 @@ export default {
       getIssues(issueId).then(response => {
         this.form = response.data;
         this.open = true;
-        this.title = "修改问题管理";
+        this.title = "修改问题";
       });
     },
     /** 提交按钮 */
@@ -313,7 +313,7 @@ export default {
     /** 删除按钮操作 */
     handleDelete(row) {
       const issueIds = row.issueId || this.ids;
-      this.$modal.confirm('是否确认删除问题管理编号为"' + issueIds + '"的数据项？').then(function() {
+      this.$modal.confirm('是否确认删除问题编号为"' + issueIds + '"的数据项？').then(function() {
         return delIssues(issueIds);
       }).then(() => {
         this.getList();

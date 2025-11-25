@@ -2,6 +2,8 @@ package com.ruoyi.project.controller;
 
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
+
+import com.ruoyi.project.service.IProjectsService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,83 +24,79 @@ import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.common.core.page.TableDataInfo;
 
 /**
- * 问题管理Controller
- * 
+ * 问题Controller
+ *
  * @author ruoyi
- * @date 2025-11-24
+ * @date 2025-11-25
  */
 @RestController
 @RequestMapping("/ruoyi-project/issues")
-public class IssuesController extends BaseController
-{
+public class IssuesController extends BaseController {
     @Autowired
     private IIssuesService issuesService;
 
+    @Autowired
+    private IProjectsService projectsService;
+
     /**
-     * 查询问题管理列表
+     * 查询问题列表
      */
     @PreAuthorize("@ss.hasPermi('ruoyi-project:issues:list')")
     @GetMapping("/list")
-    public TableDataInfo list(Issues issues)
-    {
+    public TableDataInfo list(Issues issues) {
         startPage();
         List<Issues> list = issuesService.selectIssuesList(issues);
         return getDataTable(list);
     }
 
     /**
-     * 导出问题管理列表
+     * 导出问题列表
      */
     @PreAuthorize("@ss.hasPermi('ruoyi-project:issues:export')")
-    @Log(title = "问题管理", businessType = BusinessType.EXPORT)
+    @Log(title = "问题", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
-    public void export(HttpServletResponse response, Issues issues)
-    {
+    public void export(HttpServletResponse response, Issues issues) {
         List<Issues> list = issuesService.selectIssuesList(issues);
         ExcelUtil<Issues> util = new ExcelUtil<Issues>(Issues.class);
-        util.exportExcel(response, list, "问题管理数据");
+        util.exportExcel(response, list, "问题数据");
     }
 
     /**
-     * 获取问题管理详细信息
+     * 获取问题详细信息
      */
     @PreAuthorize("@ss.hasPermi('ruoyi-project:issues:query')")
     @GetMapping(value = "/{issueId}")
-    public AjaxResult getInfo(@PathVariable("issueId") Long issueId)
-    {
+    public AjaxResult getInfo(@PathVariable("issueId") Long issueId) {
         return success(issuesService.selectIssuesByIssueId(issueId));
     }
 
     /**
-     * 新增问题管理
+     * 新增问题
      */
     @PreAuthorize("@ss.hasPermi('ruoyi-project:issues:add')")
-    @Log(title = "问题管理", businessType = BusinessType.INSERT)
+    @Log(title = "问题", businessType = BusinessType.INSERT)
     @PostMapping
-    public AjaxResult add(@RequestBody Issues issues)
-    {
+    public AjaxResult add(@RequestBody Issues issues) {
         return toAjax(issuesService.insertIssues(issues));
     }
 
     /**
-     * 修改问题管理
+     * 修改问题
      */
     @PreAuthorize("@ss.hasPermi('ruoyi-project:issues:edit')")
-    @Log(title = "问题管理", businessType = BusinessType.UPDATE)
+    @Log(title = "问题", businessType = BusinessType.UPDATE)
     @PutMapping
-    public AjaxResult edit(@RequestBody Issues issues)
-    {
+    public AjaxResult edit(@RequestBody Issues issues) {
         return toAjax(issuesService.updateIssues(issues));
     }
 
     /**
-     * 删除问题管理
+     * 删除问题
      */
     @PreAuthorize("@ss.hasPermi('ruoyi-project:issues:remove')")
-    @Log(title = "问题管理", businessType = BusinessType.DELETE)
-	@DeleteMapping("/{issueIds}")
-    public AjaxResult remove(@PathVariable Long[] issueIds)
-    {
+    @Log(title = "问题", businessType = BusinessType.DELETE)
+    @DeleteMapping("/{issueIds}")
+    public AjaxResult remove(@PathVariable Long[] issueIds) {
         return toAjax(issuesService.deleteIssuesByIssueIds(issueIds));
     }
 }

@@ -8,10 +8,10 @@ import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.core.domain.BaseEntity;
 
 /**
- * 问题管理对象 issues
+ * 问题对象 issues
  * 
  * @author ruoyi
- * @date 2025-11-24
+ * @date 2025-11-25
  */
 public class Issues extends BaseEntity
 {

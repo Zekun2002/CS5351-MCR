@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-// 查询问题管理列表
+// 查询问题列表
 export function listIssues(query) {
   return request({
     url: '/ruoyi-project/issues/list',
@@ -9,7 +9,7 @@ export function listIssues(query) {
   })
 }
 
-// 查询问题管理详细
+// 查询问题详细
 export function getIssues(issueId) {
   return request({
     url: '/ruoyi-project/issues/' + issueId,
@@ -17,7 +17,7 @@ export function getIssues(issueId) {
   })
 }
 
-// 新增问题管理
+// 新增问题
 export function addIssues(data) {
   return request({
     url: '/ruoyi-project/issues',
@@ -26,7 +26,7 @@ export function addIssues(data) {
   })
 }
 
-// 修改问题管理
+// 修改问题
 export function updateIssues(data) {
   return request({
     url: '/ruoyi-project/issues',
@@ -35,7 +35,7 @@ export function updateIssues(data) {
   })
 }
 
-// 删除问题管理
+// 删除问题
 export function delIssues(issueId) {
   return request({
     url: '/ruoyi-project/issues/' + issueId,

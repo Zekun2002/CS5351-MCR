@@ -8,10 +8,10 @@ import com.ruoyi.project.domain.Issues;
 import com.ruoyi.project.service.IIssuesService;
 
 /**
- * 问题管理Service业务层处理
+ * 问题Service业务层处理
  * 
  * @author ruoyi
- * @date 2025-11-24
+ * @date 2025-11-25
  */
 @Service
 public class IssuesServiceImpl implements IIssuesService 
@@ -20,10 +20,10 @@ public class IssuesServiceImpl implements IIssuesService
     private IssuesMapper issuesMapper;
 
     /**
-     * 查询问题管理
+     * 查询问题
      * 
-     * @param issueId 问题管理主键
-     * @return 问题管理
+     * @param issueId 问题主键
+     * @return 问题
      */
     @Override
     public Issues selectIssuesByIssueId(Long issueId)
@@ -32,10 +32,10 @@ public class IssuesServiceImpl implements IIssuesService
     }
 
     /**
-     * 查询问题管理列表
+     * 查询问题列表
      * 
-     * @param issues 问题管理
-     * @return 问题管理
+     * @param issues 问题
+     * @return 问题
      */
     @Override
     public List<Issues> selectIssuesList(Issues issues)
@@ -44,9 +44,9 @@ public class IssuesServiceImpl implements IIssuesService
     }
 
     /**
-     * 新增问题管理
+     * 新增问题
      * 
-     * @param issues 问题管理
+     * @param issues 问题
      * @return 结果
      */
     @Override
@@ -56,9 +56,9 @@ public class IssuesServiceImpl implements IIssuesService
     }
 
     /**
-     * 修改问题管理
+     * 修改问题
      * 
-     * @param issues 问题管理
+     * @param issues 问题
      * @return 结果
      */
     @Override
@@ -68,9 +68,9 @@ public class IssuesServiceImpl implements IIssuesService
     }
 
     /**
-     * 批量删除问题管理
+     * 批量删除问题
      * 
-     * @param issueIds 需要删除的问题管理主键
+     * @param issueIds 需要删除的问题主键
      * @return 结果
      */
     @Override
@@ -80,9 +80,9 @@ public class IssuesServiceImpl implements IIssuesService
     }
 
     /**
-     * 删除问题管理信息
+     * 删除问题信息
      * 
-     * @param issueId 问题管理主键
+     * @param issueId 问题主键
      * @return 结果
      */
     @Override
