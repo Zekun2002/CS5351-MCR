@@ -322,7 +322,7 @@ export default {
           })
           this.userIds = response.data.user_ids
           this.userIds.map(function(item){
-            item.userName = item.userId + "\t" + item.userName
+            item.userName = item.userId + "\t" + item.username
             return item
           })
       });
