@@ -1,32 +1,32 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="问题所属项目ID" prop="projectId">
+    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" >
+      <el-form-item label="Issue Project ID" prop="projectId">
         <el-input
           v-model="queryParams.projectId"
-          placeholder="请输入问题所属项目ID"
+          placeholder="Please enter the issue project ID"
           clearable
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="问题所属任务ID" prop="taskId">
+      <el-form-item label="Issue Task ID" prop="taskId">
         <el-input
           v-model="queryParams.taskId"
-          placeholder="请输入问题所属任务ID"
+          placeholder="Please enter the issue task ID"
           clearable
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="问题ID" prop="issueId">
+      <el-form-item label="Issue ID" prop="issueId">
         <el-input
           v-model="queryParams.issueId"
-          placeholder="请输入问题ID"
+          placeholder="Please enter the issue ID"
           clearable
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="问题类型" prop="issueType">
-        <el-select v-model="queryParams.issueType" placeholder="请输入问题类型" >
+      <el-form-item label="Issue Type" prop="issueType">
+        <el-select v-model="queryParams.issueType" placeholder="Please enter the issue type" >
             <el-option
               v-for="item in issueTypes"
               :key="item.value"
@@ -35,8 +35,8 @@
             </el-option>
           </el-select>
       </el-form-item>
-      <el-form-item label="问题状态" prop="status">
-        <el-select v-model="queryParams.status" placeholder="请输入问题状态" >
+      <el-form-item label="Issue Status" prop="status">
+        <el-select v-model="queryParams.status" placeholder="Please enter the issue status" >
             <el-option
               v-for="item in statusTypes"
               :key="item.value"
@@ -45,33 +45,33 @@
             </el-option>
           </el-select>
       </el-form-item>
-      <el-form-item label="创建问题的用户ID" prop="createdBy">
+      <el-form-item label="Created By User ID" prop="createdBy">
         <el-input
           v-model="queryParams.createdBy"
-          placeholder="请输入创建问题的用户ID"
+          placeholder="Please enter the created by user ID"
           clearable
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="问题创建时间" prop="createdAt">
+      <el-form-item label="Issue Creation Time" prop="createdAt">
         <el-date-picker clearable
           v-model="queryParams.createdAt"
           type="date"
           value-format="yyyy-MM-dd"
-          placeholder="请选择问题创建时间">
+          placeholder="Please select the issue creation time">
         </el-date-picker>
       </el-form-item>
-      <el-form-item label="问题更新时间" prop="updatedAt">
+      <el-form-item label="Issue Update Time" prop="updatedAt">
         <el-date-picker clearable
           v-model="queryParams.updatedAt"
           type="date"
           value-format="yyyy-MM-dd"
-          placeholder="请选择问题更新时间">
+          placeholder="Please select the issue update time">
         </el-date-picker>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
-        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">search</el-button>
+        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">reset</el-button>
       </el-form-item>
     </el-form>
 
@@ -84,7 +84,7 @@
           size="mini"
           @click="handleAdd"
           v-hasPermi="['ruoyi-project:issues:add']"
-        >新增</el-button>
+        >add</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -95,7 +95,7 @@
           :disabled="single"
           @click="handleUpdate"
           v-hasPermi="['ruoyi-project:issues:edit']"
-        >修改</el-button>
+        >update</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -106,7 +106,7 @@
           :disabled="multiple"
           @click="handleDelete"
           v-hasPermi="['ruoyi-project:issues:remove']"
-        >删除</el-button>
+        >delete</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -116,26 +116,26 @@
           size="mini"
           @click="handleExport"
           v-hasPermi="['ruoyi-project:issues:export']"
-        >导出</el-button>
+        >export</el-button>
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
     <el-table v-loading="loading" :data="issuesList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="问题唯一标识" align="center" prop="issueId" />
-      <el-table-column label="问题所属项目ID" align="center" prop="projectId" />
-      <el-table-column label="问题所属任务ID" align="center" prop="taskId" />
-      <el-table-column label="问题类型" align="center" prop="issueType" />
-      <el-table-column label="问题描述" align="center" prop="description" />
-      <el-table-column label="问题状态" align="center" prop="status" />
-      <el-table-column label="创建问题的用户ID" align="center" prop="createdBy" />
-      <el-table-column label="问题创建时间" align="center" prop="createdAt" width="180">
+      <el-table-column label="Unique Issue Identifier" align="center" prop="issueId" />
+      <el-table-column label="Issue Project ID" align="center" prop="projectId" />
+      <el-table-column label="Issue Task ID" align="center" prop="taskId" />
+      <el-table-column label="Issue Type" align="center" prop="issueType" />
+      <el-table-column label="Description" align="center" prop="description" />
+      <el-table-column label="Issue Status" align="center" prop="status" />
+      <el-table-column label="Creator ID" align="center" prop="createdBy" />
+      <el-table-column label="Created Time" align="center" prop="createdAt" width="180">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.createdAt, '{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="问题更新时间" align="center" prop="updatedAt" width="180">
+      <el-table-column label="Updated Time" align="center" prop="updatedAt" width="180">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.updatedAt, '{y}-{m}-{d}') }}</span>
         </template>
@@ -148,14 +148,14 @@
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
             v-hasPermi="['ruoyi-project:issues:edit']"
-          >修改</el-button>
+          >update</el-button>
           <el-button
             size="mini"
             type="text"
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
             v-hasPermi="['ruoyi-project:issues:remove']"
-          >删除</el-button>
+          >delete</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -169,13 +169,13 @@
     />
 
     <!-- 添加或修改问题对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
-      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+    <el-dialog :title="title" :visible.sync="open" width="550px" append-to-body>
+      <el-form ref="form" :model="form" :rules="rules" label="200px">
         <!-- <el-form-item label="问题所属项目ID" prop="projectId">
           <el-input v-model="form.projectId" placeholder="请输入问题所属项目ID" />
         </el-form-item> -->
-        <el-form-item label="问题所属项目ID" prop="projectId">
-          <el-select v-model="form.projectId" placeholder="请输入问题所属任务ID" >
+        <el-form-item label="Issue Project ID" prop="projectId">
+          <el-select v-model="form.projectId" placeholder="Please enter the issue project ID" >
             <el-option
               v-for="item in projectIds"
               :key="item.projectId"
@@ -184,8 +184,8 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="问题所属任务ID" prop="taskId">
-          <el-select v-model="form.taskId" placeholder="请输入问题所属任务ID" >
+        <el-form-item label="Issue Task ID" prop="taskId">
+          <el-select v-model="form.taskId" placeholder="Please enter the issue task ID" >
             <el-option
               v-for="item in taskIds"
               :key="item.taskId"
@@ -194,14 +194,14 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="问题描述" prop="description">
-          <el-input v-model="form.description" type="textarea" placeholder="请输入内容" />
+        <el-form-item label="Description" prop="description">
+          <el-input v-model="form.description" type="textarea" placeholder="Please enter the description" />
         </el-form-item>
         <!-- <el-form-item label="创建问题的用户ID" prop="createdBy">
           <el-input v-model="form.createdBy" placeholder="请输入创建问题的用户ID" />
         </el-form-item> -->
-        <el-form-item label="创建问题的用户ID" prop="userId">
-          <el-select v-model="form.createdBy" placeholder="请输入创建问题的用户ID" >
+        <el-form-item label="Creator ID" prop="userId">
+          <el-select v-model="form.createdBy" placeholder="Please enter the creator ID" >
             <el-option
               v-for="item in userIds"
               :key="item.userId"
@@ -210,8 +210,8 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="问题类型" prop="issueType">
-          <el-select v-model="form.issueType" placeholder="请输入问题类型" >
+        <el-form-item label="Issue Type" prop="issueType">
+          <el-select v-model="form.issueType" placeholder="Please enter the issue type" >
             <el-option
               v-for="item in issueTypes"
               :key="item.value"
@@ -220,8 +220,8 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="问题状态" prop="status">
-          <el-select v-model="form.status" placeholder="请输入问题状态" >
+        <el-form-item label="Issue Status" prop="status">
+          <el-select v-model="form.status" placeholder="Please enter the issue status" >
             <el-option
               v-for="item in statusTypes"
               :key="item.value"
@@ -230,26 +230,26 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="问题创建时间" prop="createdAt">
+        <el-form-item label="Created Time" prop="createdAt">
           <el-date-picker clearable
             v-model="form.createdAt"
             type="date"
             value-format="yyyy-MM-dd"
-            placeholder="请选择问题创建时间">
+            placeholder="Please select the created time">
           </el-date-picker>
         </el-form-item>
-        <el-form-item label="问题更新时间" prop="updatedAt">
+        <el-form-item label="Updated Time" prop="updatedAt">
           <el-date-picker clearable
             v-model="form.updatedAt"
             type="date"
             value-format="yyyy-MM-dd"
-            placeholder="请选择问题更新时间">
+            placeholder="Please select the updated time">
           </el-date-picker>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="submitForm">确 定</el-button>
-        <el-button @click="cancel">取 消</el-button>
+        <el-button type="primary" @click="submitForm">submit</el-button>
+        <el-button @click="cancel">cancel</el-button>
       </div>
     </el-dialog>
   </div>
@@ -380,7 +380,7 @@ export default {
       });
       this.reset();
       this.open = true;
-      this.title = "添加问题";
+      this.title = "Add Question";
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
@@ -407,7 +407,7 @@ export default {
         this.form = response.data;
         this.form.userId = this.form.createdBy
         this.open = true;
-        this.title = "修改问题";
+        this.title = "Update Question";
       });
     },
     /** 提交按钮 */
@@ -416,13 +416,13 @@ export default {
         if (valid) {
           if (this.form.issueId != null) {
             updateIssues(this.form).then(response => {
-              this.$modal.msgSuccess("修改成功");
+              this.$modal.msgSuccess("Successfully Updated");
               this.open = false;
               this.getList();
             });
           } else {
             addIssues(this.form).then(response => {
-              this.$modal.msgSuccess("新增成功");
+              this.$modal.msgSuccess("Successfully Added");
               this.open = false;
               this.getList();
             });
@@ -433,11 +433,11 @@ export default {
     /** 删除按钮操作 */
     handleDelete(row) {
       const issueIds = row.issueId || this.ids;
-      this.$modal.confirm('是否确认删除问题编号为"' + issueIds + '"的数据项？').then(function() {
+      this.$modal.confirm('Confirm deletion of issue # ' + issueIds + '?').then(function() {
         return delIssues(issueIds);
       }).then(() => {
         this.getList();
-        this.$modal.msgSuccess("删除成功");
+        this.$modal.msgSuccess("Successfully Delete");
       }).catch(() => {});
     },
     /** 导出按钮操作 */

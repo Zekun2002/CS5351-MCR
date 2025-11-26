@@ -1,33 +1,33 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="任务ID" prop="taskId">
+    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" >
+      <el-form-item label="Task ID" prop="taskId">
         <el-input
           v-model="queryParams.taskId"
-          placeholder="请输入任务ID"
+          placeholder="Please enter the task id"
           clearable
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="用户ID" prop="userId">
+      <el-form-item label="User ID" prop="userId">
         <el-input
           v-model="queryParams.userId"
-          placeholder="请输入用户ID"
+          placeholder="Please enter the user id"
           clearable
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="任务分配给成员的时间" prop="assignedAt">
+      <el-form-item label="Assigned Time" prop="assignedAt">
         <el-date-picker clearable
           v-model="queryParams.assignedAt"
           type="date"
           value-format="yyyy-MM-dd"
-          placeholder="请选择任务分配给成员的时间">
+          placeholder="Please enter the assigned time">
         </el-date-picker>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
-        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">search</el-button>
+        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">reset</el-button>
       </el-form-item>
     </el-form>
 
@@ -40,7 +40,7 @@
           size="mini"
           @click="handleAdd"
           v-hasPermi="['ruoyi-project:members:add']"
-        >新增</el-button>
+        >add</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -51,7 +51,7 @@
           :disabled="single"
           @click="handleUpdate"
           v-hasPermi="['ruoyi-project:members:edit']"
-        >修改</el-button>
+        >update</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -62,7 +62,7 @@
           :disabled="multiple"
           @click="handleDelete"
           v-hasPermi="['ruoyi-project:members:remove']"
-        >删除</el-button>
+        >delete</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -72,22 +72,22 @@
           size="mini"
           @click="handleExport"
           v-hasPermi="['ruoyi-project:members:export']"
-        >导出</el-button>
+        >export</el-button>
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
     <el-table v-loading="loading" :data="membersList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="任务成员唯一标识" align="center" prop="taskMemberId" />
-      <el-table-column label="任务ID" align="center" prop="taskId" />
-      <el-table-column label="用户ID" align="center" prop="userId" />
-      <el-table-column label="任务分配给成员的时间" align="center" prop="assignedAt" width="180">
+      <el-table-column label="Unique identifier of the task member" align="center" prop="taskMemberId" />
+      <el-table-column label="Task ID" align="center" prop="taskId" />
+      <el-table-column label="User ID" align="center" prop="userId" />
+      <el-table-column label="Assigned Time" align="center" prop="assignedAt" width="180">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.assignedAt, '{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <el-table-column label="Operation" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
             size="mini"
@@ -95,14 +95,14 @@
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
             v-hasPermi="['ruoyi-project:members:edit']"
-          >修改</el-button>
+          >update</el-button>
           <el-button
             size="mini"
             type="text"
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
             v-hasPermi="['ruoyi-project:members:remove']"
-          >删除</el-button>
+          >delete</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -121,8 +121,8 @@
         <!-- <el-form-item label="任务ID" prop="taskId">
           <el-input v-model="form.taskId" placeholder="请输入任务ID" />
         </el-form-item> -->
-        <el-form-item label="任务ID" prop="taskId">
-          <el-select v-model="form.taskId" placeholder="请输入创建问题的用户ID" >
+        <el-form-item label="Task ID" prop="taskId">
+          <el-select v-model="form.taskId" placeholder="Please enter the task id" >
             <el-option
               v-for="item in taskIds"
               :key="item.taskId"
@@ -134,8 +134,8 @@
         <!-- <el-form-item label="用户ID" prop="userId">
           <el-input v-model="form.userId" placeholder="请输入用户ID" />
         </el-form-item> -->
-        <el-form-item label="用户ID" prop="userId">
-          <el-select v-model="form.userId" placeholder="请输入创建问题的用户ID" >
+        <el-form-item label="User ID" prop="userId">
+          <el-select v-model="form.userId" placeholder="Please enter the user id" >
             <el-option
               v-for="item in userIds"
               :key="item.userId"
@@ -144,18 +144,18 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="任务分配给成员的时间" prop="assignedAt">
+        <el-form-item label="Assigned Time" prop="assignedAt">
           <el-date-picker clearable
             v-model="form.assignedAt"
             type="date"
             value-format="yyyy-MM-dd"
-            placeholder="请选择任务分配给成员的时间">
+            placeholder="Please enter the assigned time">
           </el-date-picker>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="submitForm">确 定</el-button>
-        <el-button @click="cancel">取 消</el-button>
+        <el-button type="primary" @click="submitForm">submit</el-button>
+        <el-button @click="cancel">cancel</el-button>
       </div>
     </el-dialog>
   </div>
@@ -269,7 +269,7 @@ export default {
       })
       this.reset();
       this.open = true;
-      this.title = "添加任务成员";
+      this.title = "Add Task Member";
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
@@ -290,7 +290,7 @@ export default {
       getMembers(taskMemberId).then(response => {
         this.form = response.data;
         this.open = true;
-        this.title = "修改任务成员";
+        this.title = "Update Task Member";
       });
     },
     /** 提交按钮 */
@@ -299,13 +299,13 @@ export default {
         if (valid) {
           if (this.form.taskMemberId != null) {
             updateMembers(this.form).then(response => {
-              this.$modal.msgSuccess("修改成功");
+              this.$modal.msgSuccess("Successfully Updated");
               this.open = false;
               this.getList();
             });
           } else {
             addMembers(this.form).then(response => {
-              this.$modal.msgSuccess("新增成功");
+              this.$modal.msgSuccess("Successfully Added");
               this.open = false;
               this.getList();
             });
@@ -316,11 +316,11 @@ export default {
     /** 删除按钮操作 */
     handleDelete(row) {
       const taskMemberIds = row.taskMemberId || this.ids;
-      this.$modal.confirm('是否确认删除任务成员编号为"' + taskMemberIds + '"的数据项？').then(function() {
+      this.$modal.confirm('Are you sure you want to delete the data entry with task member ID ' + taskMemberIds + '?').then(function() {
         return delMembers(taskMemberIds);
       }).then(() => {
         this.getList();
-        this.$modal.msgSuccess("删除成功");
+        this.$modal.msgSuccess("Successfully Deleted");
       }).catch(() => {});
     },
     /** 导出按钮操作 */

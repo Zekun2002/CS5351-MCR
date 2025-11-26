@@ -1,24 +1,24 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="任务所属项目ID" prop="projectId">
+    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" >
+      <el-form-item label="Task Project ID" prop="projectId">
         <el-input
           v-model="queryParams.projectId"
-          placeholder="请输入任务所属项目ID"
+          placeholder="Please enter the Task Project ID"
           clearable
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="任务名称" prop="taskName">
+      <el-form-item label="Task Name" prop="taskName">
         <el-input
           v-model="queryParams.taskName"
-          placeholder="请输入任务名称"
+          placeholder="Please enter the Task Name"
           clearable
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="任务优先级" prop="priority">
-        <el-select v-model="queryParams.priority" placeholder="请输入任务优先级" >
+      <el-form-item label="Task Priority" prop="priority">
+        <el-select v-model="queryParams.priority" placeholder="Please enter the Task Priority" >
             <el-option
               v-for="item in priorityTypes"
               :key="item.value"
@@ -27,8 +27,8 @@
             </el-option>
           </el-select>
       </el-form-item>
-      <el-form-item label="任务状态" prop="status">
-        <el-select v-model="queryParams.status" placeholder="请输入任务状态" >
+      <el-form-item label="Task Status" prop="status">
+        <el-select v-model="queryParams.status" placeholder="Please enter the Task Status" >
             <el-option
               v-for="item in statusTypes"
               :key="item.value"
@@ -37,41 +37,41 @@
             </el-option>
           </el-select>
       </el-form-item>
-      <el-form-item label="创建任务的用户ID" prop="createdBy">
+      <el-form-item label="Creator ID" prop="createdBy">
         <el-input
           v-model="queryParams.createdBy"
-          placeholder="请输入创建任务的用户ID"
+          placeholder="Please enter the Creator ID"
           clearable
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="任务分配给的用户ID" prop="assignedTo">
+      <el-form-item label="Assignee ID" prop="assignedTo">
         <el-input
           v-model="queryParams.assignedTo"
-          placeholder="请输入任务分配给的用户ID"
+          placeholder="Please enter the Assignee ID"
           clearable
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="任务创建时间" prop="createdAt">
+      <el-form-item label="Created Time" prop="createdAt">
         <el-date-picker clearable
           v-model="queryParams.createdAt"
           type="date"
           value-format="yyyy-MM-dd"
-          placeholder="请选择任务创建时间">
+          placeholder="Please select the task creation time">
         </el-date-picker>
       </el-form-item>
-      <el-form-item label="任务更新时间" prop="updatedAt">
+      <el-form-item label="Task Updated Time" prop="updatedAt">
         <el-date-picker clearable
           v-model="queryParams.updatedAt"
           type="date"
           value-format="yyyy-MM-dd"
-          placeholder="请选择任务更新时间">
+          placeholder="Please select the task updated time">
         </el-date-picker>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
-        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">search</el-button>
+        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">reset</el-button>
       </el-form-item>
     </el-form>
 
@@ -84,7 +84,7 @@
           size="mini"
           @click="handleAdd"
           v-hasPermi="['ruoyi-project:tasks:add']"
-        >新增</el-button>
+        >add</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -95,7 +95,7 @@
           :disabled="single"
           @click="handleUpdate"
           v-hasPermi="['ruoyi-project:tasks:edit']"
-        >修改</el-button>
+        >update</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -106,7 +106,7 @@
           :disabled="multiple"
           @click="handleDelete"
           v-hasPermi="['ruoyi-project:tasks:remove']"
-        >删除</el-button>
+        >delete</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -116,32 +116,32 @@
           size="mini"
           @click="handleExport"
           v-hasPermi="['ruoyi-project:tasks:export']"
-        >导出</el-button>
+        >export</el-button>
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
     <el-table v-loading="loading" :data="tasksList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="任务唯一标识" align="center" prop="taskId" />
-      <el-table-column label="任务所属项目ID" align="center" prop="projectId" />
-      <el-table-column label="任务名称" align="center" prop="taskName" />
-      <el-table-column label="任务描述" align="center" prop="description" />
-      <el-table-column label="任务优先级" align="center" prop="priority" />
-      <el-table-column label="任务状态" align="center" prop="status" />
-      <el-table-column label="创建任务的用户ID" align="center" prop="createdBy" />
-      <el-table-column label="任务分配给的用户ID" align="center" prop="assignedTo" />
-      <el-table-column label="任务创建时间" align="center" prop="createdAt" width="180">
+      <el-table-column label="Task ID" align="center" prop="taskId" />
+      <el-table-column label="Task Project ID" align="center" prop="projectId" />
+      <el-table-column label="Task Name" align="center" prop="taskName" />
+      <el-table-column label="Task Description" align="center" prop="description" />
+      <el-table-column label="Task Priority" align="center" prop="priority" />
+      <el-table-column label="Task Status" align="center" prop="status" />
+      <el-table-column label="Creator ID" align="center" prop="createdBy" />
+      <el-table-column label="Assignee ID" align="center" prop="assignedTo" />
+      <el-table-column label="Task Created Time" align="center" prop="createdAt" width="180">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.createdAt, '{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="任务更新时间" align="center" prop="updatedAt" width="180">
+      <el-table-column label="Task Updated Time" align="center" prop="updatedAt" width="180">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.updatedAt, '{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <el-table-column label="Operation" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
             size="mini"
@@ -149,14 +149,14 @@
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
             v-hasPermi="['ruoyi-project:tasks:edit']"
-          >修改</el-button>
+          >update</el-button>
           <el-button
             size="mini"
             type="text"
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
             v-hasPermi="['ruoyi-project:tasks:remove']"
-          >删除</el-button>
+          >delete</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -171,12 +171,12 @@
 
     <!-- 添加或修改任务对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
-      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+      <el-form ref="form" :model="form" :rules="rules" >
         <!-- <el-form-item label="任务所属项目ID" prop="projectId">
           <el-input v-model="form.projectId" placeholder="请输入任务所属项目ID" />
         </el-form-item> -->
-        <el-form-item label="问题所属项目ID" prop="projectId">
-          <el-select v-model="form.projectId" placeholder="请输入问题所属任务ID" >
+        <el-form-item label="Task Project ID" prop="projectId">
+          <el-select v-model="form.projectId" placeholder="Please enter the issue project id" >
             <el-option
               v-for="item in projectIds"
               :key="item.projectId"
@@ -185,14 +185,14 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="任务名称" prop="taskName">
-          <el-input v-model="form.taskName" placeholder="请输入任务名称" />
+        <el-form-item label="Task Name" prop="taskName">
+          <el-input v-model="form.taskName" placeholder="Please enter the task name" />
         </el-form-item>
-        <el-form-item label="任务描述" prop="description">
-          <el-input v-model="form.description" type="textarea" placeholder="请输入内容" />
+        <el-form-item label="Task Description" prop="description">
+          <el-input v-model="form.description" type="textarea" placeholder="Please enter the content" />
         </el-form-item>
-        <el-form-item label="任务优先级" prop="priority">
-          <el-select v-model="form.priority" placeholder="请输入任务分配给的用户ID" >
+        <el-form-item label="Task Priority" prop="priority">
+          <el-select v-model="form.priority" placeholder="Please enter the task priority" >
             <el-option
               v-for="item in priorityTypes"
               :key="item.value"
@@ -201,8 +201,8 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="任务状态" prop="status">
-        <el-select v-model="form.status" placeholder="请输入任务状态" >
+        <el-form-item label="Task Status" prop="status">
+        <el-select v-model="form.status" placeholder="Please enter the task status" >
             <el-option
               v-for="item in statusTypes"
               :key="item.value"
@@ -214,8 +214,8 @@
         <!-- <el-form-item label="创建任务的用户ID" prop="createdBy">
           <el-input v-model="form.createdBy" placeholder="请输入创建任务的用户ID" />
         </el-form-item> -->
-        <el-form-item label="创建问题的用户ID" prop="createdById">
-          <el-select v-model="form.createdBy" placeholder="请输入创建问题的用户ID" >
+        <el-form-item label="Creator ID" prop="createdById">
+          <el-select v-model="form.createdBy" placeholder="Please enter the Issue Creator ID" >
             <el-option
               v-for="item in createdByIds"
               :key="item.userId"
@@ -227,8 +227,8 @@
         <!-- <el-form-item label="任务分配给的用户ID" prop="assignedTo">
           <el-input v-model="form.assignedTo" placeholder="请输入任务分配给的用户ID" />
         </el-form-item> -->
-        <el-form-item label="任务分配给的用户ID" prop="createdById">
-          <el-select v-model="form.assignedTo" placeholder="请输入任务分配给的用户ID" >
+        <el-form-item label="Assignee ID" prop="createdById">
+          <el-select v-model="form.assignedTo" placeholder="Please enter the Assignee ID" >
             <el-option
               v-for="item in assignedToIds"
               :key="item.userId"
@@ -237,26 +237,26 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="任务创建时间" prop="createdAt">
+        <el-form-item label="Task Created Time" prop="createdAt">
           <el-date-picker clearable
             v-model="form.createdAt"
             type="date"
             value-format="yyyy-MM-dd"
-            placeholder="请选择任务创建时间">
+            placeholder="Please select the task creation time">
           </el-date-picker>
         </el-form-item>
-        <el-form-item label="任务更新时间" prop="updatedAt">
+        <el-form-item label="Task Updated Time" prop="updatedAt">
           <el-date-picker clearable
             v-model="form.updatedAt"
             type="date"
             value-format="yyyy-MM-dd"
-            placeholder="请选择任务更新时间">
+            placeholder="Please select the task updated time">
           </el-date-picker>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="submitForm">确 定</el-button>
-        <el-button @click="cancel">取 消</el-button>
+        <el-button type="primary" @click="submitForm">submit</el-button>
+        <el-button @click="cancel">cancel</el-button>
       </div>
     </el-dialog>
   </div>
@@ -384,7 +384,7 @@ export default {
       })
       this.reset();
       this.open = true;
-      this.title = "添加任务";
+      this.title = "Add Task";
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
@@ -410,7 +410,7 @@ export default {
       getTasks(taskId).then(response => {
         this.form = response.data;
         this.open = true;
-        this.title = "修改任务";
+        this.title = "Update Task";
       });
     },
     /** 提交按钮 */
@@ -419,13 +419,13 @@ export default {
         if (valid) {
           if (this.form.taskId != null) {
             updateTasks(this.form).then(response => {
-              this.$modal.msgSuccess("修改成功");
+              this.$modal.msgSuccess("Successfully Updated");
               this.open = false;
               this.getList();
             });
           } else {
             addTasks(this.form).then(response => {
-              this.$modal.msgSuccess("新增成功");
+              this.$modal.msgSuccess("Successfully Added");
               this.open = false;
               this.getList();
             });
@@ -436,11 +436,11 @@ export default {
     /** 删除按钮操作 */
     handleDelete(row) {
       const taskIds = row.taskId || this.ids;
-      this.$modal.confirm('是否确认删除任务编号为"' + taskIds + '"的数据项？').then(function() {
+      this.$modal.confirm('Confirm deletion of task #' + taskIds).then(function() {
         return delTasks(taskIds);
       }).then(() => {
         this.getList();
-        this.$modal.msgSuccess("删除成功");
+        this.$modal.msgSuccess("Successfully Deleted");
       }).catch(() => {});
     },
     /** 导出按钮操作 */
