@@ -17,6 +17,14 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
+      <el-form-item label="问题ID" prop="issueId">
+        <el-input
+          v-model="queryParams.issueId"
+          placeholder="请输入问题ID"
+          clearable
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
       <el-form-item label="问题类型" prop="issueType">
         <el-select v-model="queryParams.issueType" placeholder="请输入问题类型" >
             <el-option
@@ -276,6 +284,7 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
+        issueId:null,
         projectId: null,
         taskId: null,
         issueType: null,
