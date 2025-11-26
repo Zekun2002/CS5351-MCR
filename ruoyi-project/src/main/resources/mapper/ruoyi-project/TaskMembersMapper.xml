@@ -66,6 +66,15 @@
         where task_member_id = #{taskMemberId}
     </update>
 
+    <update id="updateTaskMembersById">
+        update task_members
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="taskMember.userId != null">user_id = #{taskMember.userId},</if>
+            <if test="taskMember.assignedAt != null">assigned_at = #{taskMember.assignedAt},</if>
+        </trim>
+        where user_id = #{userId} and task_id = #{taskMember.taskId}
+    </update>
+
     <delete id="deleteTaskMembersByTaskMemberId" parameterType="Long">
         delete from task_members where task_member_id = #{taskMemberId}
     </delete>

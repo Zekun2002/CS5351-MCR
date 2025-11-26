@@ -66,11 +66,11 @@ public class TasksServiceImpl implements ITasksService {
     @Override
     public int insertTasks(Tasks tasks) {
         tasksMapper.insertTasks(tasks);
-        TaskMembers taskMembers = new TaskMembers();
-        taskMembers.setTaskId(tasks.getTaskId());
-        taskMembers.setUserId(tasks.getAssignedTo());
-        taskMembers.setAssignedAt(tasks.getCreatedAt());
-        return taskMembersMapper.insertTaskMembers(taskMembers);
+        TaskMembers taskMember = new TaskMembers();
+        taskMember.setTaskId(tasks.getTaskId());
+        taskMember.setUserId(tasks.getAssignedTo());
+        taskMember.setAssignedAt(tasks.getCreatedAt());
+        return taskMembersMapper.insertTaskMembers(taskMember);
     }
 
     /**
@@ -81,6 +81,14 @@ public class TasksServiceImpl implements ITasksService {
      */
     @Override
     public int updateTasks(Tasks tasks) {
+        Tasks t = tasksMapper.selectTasksByTaskId(tasks.getTaskId());
+
+        TaskMembers taskMember = new TaskMembers();
+        taskMember.setTaskId(tasks.getTaskId());
+        taskMember.setUserId(tasks.getAssignedTo());
+        taskMember.setAssignedAt(tasks.getUpdatedAt());
+        taskMembersMapper.updateTaskMembersById(t.getAssignedTo(), taskMember);
+
         return tasksMapper.updateTasks(tasks);
     }
 
