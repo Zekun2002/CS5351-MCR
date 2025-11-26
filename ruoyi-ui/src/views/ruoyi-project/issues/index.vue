@@ -172,8 +172,8 @@
         <!-- <el-form-item label="创建问题的用户ID" prop="createdBy">
           <el-input v-model="form.createdBy" placeholder="请输入创建问题的用户ID" />
         </el-form-item> -->
-        <el-form-item label="问题所属用户ID" prop="userId">
-          <el-select v-model="form.userId" placeholder="请输入问题所属用户ID" >
+        <el-form-item label="创建问题的用户ID" prop="userId">
+          <el-select v-model="form.userId" placeholder="请输入创建问题的用户ID" >
             <el-option
               v-for="item in userIds"
               :key="item.userId"
