@@ -256,7 +256,16 @@ export default {
     /** 新增按钮操作 */
     handleAdd() {
       getConnectionData().then(response => {
-        
+        this.taskIds = response.data.task_ids
+        this.taskIds.map(function(item){
+            item.taskName = item.taskId + "\t" + item.taskName
+            return item
+          })
+        this.userIds = response.data.user_ids
+        this.userIds.map(function(item){
+            item.userName = item.userId + "\t" + item.username
+            return item
+          })
       })
       this.reset();
       this.open = true;
@@ -266,6 +275,18 @@ export default {
     handleUpdate(row) {
       this.reset();
       const taskMemberId = row.taskMemberId || this.ids
+      getConnectionData().then(response => {
+        this.taskIds = response.data.task_ids
+        this.taskIds.map(function(item){
+            item.taskName = item.taskId + "\t" + item.taskName
+            return item
+          })
+        this.userIds = response.data.user_ids
+        this.userIds.map(function(item){
+            item.userName = item.userId + "\t" + item.username
+            return item
+          })
+      })
       getMembers(taskMemberId).then(response => {
         this.form = response.data;
         this.open = true;

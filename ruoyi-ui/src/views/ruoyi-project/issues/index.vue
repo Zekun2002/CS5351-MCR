@@ -386,7 +386,6 @@ export default {
     handleUpdate(row) {
       this.reset();
       const issueId = row.issueId || this.ids
-      console.log(row)
       getConnectionData().then(response => {
           this.taskIds = response.data.task_ids
           this.taskIds.map(function(item){

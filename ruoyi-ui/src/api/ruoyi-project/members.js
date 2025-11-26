@@ -45,7 +45,7 @@ export function delMembers(taskMemberId) {
 
 export function getConnectionData(){
   return request({
-    url: "111",
+    url: '/ruoyi-project/members/allIds',
     method: 'get'
   })
 }

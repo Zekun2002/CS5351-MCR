@@ -390,6 +390,23 @@ export default {
     handleUpdate(row) {
       this.reset();
       const taskId = row.taskId || this.ids
+      getConnectionData().then(response => {
+        this.projectIds = response.data.project_ids
+        this.projectIds.map(function(item){
+            item.projectName = item.projectId + "\t" + item.projectName
+            return item
+          })
+        this.createdByIds = response.data.user_ids
+        this.createdByIds.map(function(item){
+            item.userName = item.userId + "\t" + item.username
+            return item
+          })
+        this.assignedToIds = response.data.user_ids
+        this.assignedToIds.map(function(item){
+            item.userName = item.userId + "\t" + item.username
+            return item
+          })
+      })
       getTasks(taskId).then(response => {
         this.form = response.data;
         this.open = true;
