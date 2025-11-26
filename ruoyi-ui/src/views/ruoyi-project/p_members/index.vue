@@ -144,8 +144,15 @@
         </el-form-item>
 
 
-        <el-form-item label="用户id" prop="userId">
-          <el-input v-model="form.userId" placeholder="请输入用户id" />
+        <el-form-item label="用户" prop="userId">
+          <el-select v-model="form.userId" placeholder="请选择用户" clearable filterable>
+            <el-option
+              v-for="item in userList"
+              :key="item.userId"
+              :label="item.username + ' (ID: ' + item.userId + ')'"
+              :value="item.userId">
+            </el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="用户角色" prop="role">
           <el-input v-model="form.role" placeholder="请输入用户角色" />
@@ -170,6 +177,7 @@
 <script>
 import { listP_members, getP_members, delP_members, addP_members, updateP_members } from "@/api/ruoyi-project/p_members";
 import { listProject } from "@/api/ruoyi-project/project";
+import { listUsers } from "@/api/system/users";
 
 export default {
   name: "P_members",
@@ -195,6 +203,8 @@ export default {
       open: false,
       // 项目列表（用于下拉选择）
       projectIds: [],
+      // 用户列表（用于下拉选择）
+      userList: [],
       // 查询参数
       queryParams: {
         pageNum: 1,
@@ -208,12 +218,25 @@ export default {
       form: {},
       // 表单校验
       rules: {
+        projectId: [
+          { required: true, message: "项目不能为空", trigger: "change" }
+        ],
+        userId: [
+          { required: true, message: "用户不能为空", trigger: "change" }
+        ],
+        role: [
+          { required: true, message: "用户角色不能为空", trigger: "blur" }
+        ],
+        joinedAt: [
+          { required: true, message: "加入时间不能为空", trigger: "change" }
+        ]
       }
     };
   },
   created() {
     this.getList();
     this.loadProjectList();
+    this.loadUserList();
   },
   methods: {
     /** 查询项目成员管理列表 */
@@ -263,10 +286,20 @@ export default {
         this.projectIds = response.rows || [];
       });
     },
+    /** 加载用户列表 */
+    loadUserList() {
+      listUsers({}).then(response => {
+        this.userList = response.rows || [];
+      });
+    },
     /** 新增按钮操作 */
     handleAdd() {
       this.reset();
       this.loadProjectList();
+      this.loadUserList();
+      // 设置默认加入时间为当前时间
+      const now = new Date();
+      this.form.joinedAt = this.parseTime(now, '{y}-{m}-{d}');
       this.open = true;
       this.title = "添加项目成员管理";
     },
@@ -274,6 +307,7 @@ export default {
     handleUpdate(row) {
       this.reset();
       this.loadProjectList();
+      this.loadUserList();
       const memberId = row.memberId || this.ids
       getP_members(memberId).then(response => {
         this.form = response.data;

@@ -210,6 +210,30 @@ import { listProject } from "@/api/ruoyi-project/project";
 export default {
   name: "Reports",
   data() {
+    // 日期验证函数
+    const validateExpectedEndDate = (rule, value, callback) => {
+      if (!value) {
+        callback();
+        return;
+      }
+      if (this.form.reportDate && value < this.form.reportDate) {
+        callback(new Error('预期完成日期不能早于报告日期'));
+      } else {
+        callback();
+      }
+    };
+    const validateActualEndDate = (rule, value, callback) => {
+      if (!value) {
+        callback();
+        return;
+      }
+      if (this.form.reportDate && value < this.form.reportDate) {
+        callback(new Error('实际完成日期不能早于报告日期'));
+      } else {
+        callback();
+      }
+    };
+    
     return {
       // 遮罩层
       loading: true,
@@ -245,6 +269,22 @@ export default {
       form: {},
       // 表单校验
       rules: {
+        projectId: [
+          { required: true, message: "项目不能为空", trigger: "change" }
+        ],
+        reportDate: [
+          { required: true, message: "报告日期不能为空", trigger: "change" }
+        ],
+        progress: [
+          { required: true, message: "项目进度不能为空", trigger: "change" },
+          { type: 'number', min: 0, max: 100, message: "进度必须在0-100之间", trigger: "change" }
+        ],
+        expectedEndDate: [
+          { validator: validateExpectedEndDate, trigger: "change" }
+        ],
+        actualEndDate: [
+          { validator: validateActualEndDate, trigger: "change" }
+        ]
       },
       // 是否禁用项目进度条
       isDisabled:true
@@ -309,6 +349,9 @@ export default {
       this.loadProjectList();
       this.isDisabled = true
       this.form.progress = 0
+      // 设置默认报告日期为当前时间
+      const now = new Date();
+      this.form.reportDate = this.parseTime(now, '{y}-{m}-{d}');
       this.open = true;
       this.title = "Add Progress Reoprt Table";
     },
