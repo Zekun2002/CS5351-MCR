@@ -90,4 +90,22 @@ public class ProjectMembersServiceImpl implements IProjectMembersService
     {
         return projectMembersMapper.deleteProjectMembersByMemberId(memberId);
     }
+    
+    /**
+     * 检查用户是否为指定项目的PM
+     * 
+     * @param userId 用户ID
+     * @param projectId 项目ID
+     * @return 是否为PM
+     */
+    @Override
+    public boolean isProjectPM(Long userId, Long projectId)
+    {
+        ProjectMembers query = new ProjectMembers();
+        query.setUserId(userId);
+        query.setProjectId(projectId);
+        query.setRole("PM");
+        List<ProjectMembers> list = projectMembersMapper.selectProjectMembersList(query);
+        return list != null && !list.isEmpty();
+    }
 }

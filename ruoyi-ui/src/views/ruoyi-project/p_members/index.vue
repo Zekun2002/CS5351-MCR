@@ -8,6 +8,8 @@
           clearable
           @keyup.enter.native="handleQuery"
         />
+
+
       </el-form-item>
       <el-form-item label="用户id" prop="userId">
         <el-input
@@ -115,7 +117,7 @@
         </template>
       </el-table-column>
     </el-table>
-    
+
     <pagination
       v-show="total>0"
       :total="total"
@@ -127,9 +129,21 @@
     <!-- 添加或修改项目成员管理对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+
         <el-form-item label="项目id" prop="projectId">
-          <el-input v-model="form.projectId" placeholder="请输入项目id" />
+<!--          <el-input v-model="form.projectId" placeholder="请输入项目id" />-->
+
+          <el-select v-model="form.projectId" placeholder="请输入项目id" >
+            <el-option
+              v-for="item in projectIds"
+              :key="item.projectId"
+              :label="item.projectName"
+              :value="item.projectId">
+            </el-option>
+          </el-select>
         </el-form-item>
+
+
         <el-form-item label="用户id" prop="userId">
           <el-input v-model="form.userId" placeholder="请输入用户id" />
         </el-form-item>
@@ -155,6 +169,7 @@
 
 <script>
 import { listP_members, getP_members, delP_members, addP_members, updateP_members } from "@/api/ruoyi-project/p_members";
+import { listProject } from "@/api/ruoyi-project/project";
 
 export default {
   name: "P_members",
@@ -178,6 +193,8 @@ export default {
       title: "",
       // 是否显示弹出层
       open: false,
+      // 项目列表（用于下拉选择）
+      projectIds: [],
       // 查询参数
       queryParams: {
         pageNum: 1,
@@ -196,6 +213,7 @@ export default {
   },
   created() {
     this.getList();
+    this.loadProjectList();
   },
   methods: {
     /** 查询项目成员管理列表 */
@@ -239,15 +257,23 @@ export default {
       this.single = selection.length!==1
       this.multiple = !selection.length
     },
+    /** 加载项目列表 */
+    loadProjectList() {
+      listProject({}).then(response => {
+        this.projectIds = response.rows || [];
+      });
+    },
     /** 新增按钮操作 */
     handleAdd() {
       this.reset();
+      this.loadProjectList();
       this.open = true;
       this.title = "添加项目成员管理";
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
       this.reset();
+      this.loadProjectList();
       const memberId = row.memberId || this.ids
       getP_members(memberId).then(response => {
         this.form = response.data;

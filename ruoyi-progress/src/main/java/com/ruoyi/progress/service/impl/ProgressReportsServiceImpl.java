@@ -52,6 +52,10 @@ public class ProgressReportsServiceImpl implements IProgressReportsService
     @Override
     public int insertProgressReports(ProgressReports progressReports)
     {
+        // 如果进度未达到100%，不允许设置实际完成日期
+        if (progressReports.getProgress() != null && progressReports.getProgress().compareTo(new java.math.BigDecimal("100")) < 0) {
+            progressReports.setActualEndDate(null);
+        }
         return progressReportsMapper.insertProgressReports(progressReports);
     }
 
@@ -64,6 +68,10 @@ public class ProgressReportsServiceImpl implements IProgressReportsService
     @Override
     public int updateProgressReports(ProgressReports progressReports)
     {
+        // 如果进度未达到100%，不允许设置实际完成日期
+        if (progressReports.getProgress() != null && progressReports.getProgress().compareTo(new java.math.BigDecimal("100")) < 0) {
+            progressReports.setActualEndDate(null);
+        }
         return progressReportsMapper.updateProgressReports(progressReports);
     }
 

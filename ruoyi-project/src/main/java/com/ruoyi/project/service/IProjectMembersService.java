@@ -58,4 +58,13 @@ public interface IProjectMembersService
      * @return 结果
      */
     public int deleteProjectMembersByMemberId(Long memberId);
+    
+    /**
+     * 检查用户是否为指定项目的PM
+     * 
+     * @param userId 用户ID
+     * @param projectId 项目ID
+     * @return 是否为PM
+     */
+    public boolean isProjectPM(Long userId, Long projectId);
 }
