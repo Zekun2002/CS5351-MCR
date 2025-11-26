@@ -102,7 +102,15 @@
           <span>{{ parseTime(scope.row.reportDate, '{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="项目进度" align="center" prop="progress" />
+      <!-- <el-table-column label="项目进度" align="center" prop="progress" /> -->
+      <el-table-column label="项目进度" align="center" prop="progress" width="180">
+        <!-- <template slot-scope="scope">
+          <span>{{ parseTime(scope.row.expectedEndDate, '{y}-{m}-{d}') }}</span>
+        </template> -->
+        <template slot-scope="scope">
+          <el-progress :text-inside="true" :stroke-width="26" :percentage="scope.row.progress"></el-progress>
+        </template>
+      </el-table-column>
       <el-table-column label="预期完成日期" align="center" prop="expectedEndDate" width="180">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.expectedEndDate, '{y}-{m}-{d}') }}</span>
@@ -156,7 +164,12 @@
           </el-date-picker>
         </el-form-item>
         <el-form-item label="项目进度" prop="progress">
-          <el-input v-model="form.progress" placeholder="请输入项目进度" />
+          <template>
+            <div class="block">
+              <el-slider v-model="form.progress" show-input></el-slider>
+            </div>
+          </template>
+          <!-- <el-input v-model="form.progress" placeholder="请输入项目进度" /> -->
         </el-form-item>
         <el-form-item label="预期完成日期" prop="expectedEndDate">
           <el-date-picker clearable
@@ -274,6 +287,7 @@ export default {
     /** 新增按钮操作 */
     handleAdd() {
       this.reset();
+      this.form.progress = 0
       this.open = true;
       this.title = "添加进度报告表";
     },
