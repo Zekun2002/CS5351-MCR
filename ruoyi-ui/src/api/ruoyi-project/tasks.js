@@ -45,7 +45,7 @@ export function delTasks(taskId) {
 
 export function getConnectionData(){
   return request({
-    url: '',
+    url: '/ruoyi-project/tasks/allIds',
     method: 'get'
   })
 }

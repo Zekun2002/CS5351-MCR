@@ -18,12 +18,24 @@
         />
       </el-form-item>
       <el-form-item label="任务优先级" prop="priority">
-        <el-input
-          v-model="queryParams.priority"
-          placeholder="请输入任务优先级"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
+        <el-select v-model="queryParams.priority" placeholder="请输入任务优先级" >
+            <el-option
+              v-for="item in priorityTypes"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+      </el-form-item>
+      <el-form-item label="任务状态" prop="status">
+        <el-select v-model="queryParams.status" placeholder="请输入任务状态" >
+            <el-option
+              v-for="item in statusTypes"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
       </el-form-item>
       <el-form-item label="创建任务的用户ID" prop="createdBy">
         <el-input
@@ -180,18 +192,35 @@
           <el-input v-model="form.description" type="textarea" placeholder="请输入内容" />
         </el-form-item>
         <el-form-item label="任务优先级" prop="priority">
-          <el-input v-model="form.priority" placeholder="请输入任务优先级" />
+          <el-select v-model="form.priority" placeholder="请输入任务分配给的用户ID" >
+            <el-option
+              v-for="item in priorityTypes"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
         </el-form-item>
+        <el-form-item label="任务状态" prop="status">
+        <el-select v-model="form.status" placeholder="请输入任务状态" >
+            <el-option
+              v-for="item in statusTypes"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+      </el-form-item>
         <!-- <el-form-item label="创建任务的用户ID" prop="createdBy">
           <el-input v-model="form.createdBy" placeholder="请输入创建任务的用户ID" />
         </el-form-item> -->
         <el-form-item label="创建问题的用户ID" prop="createdById">
-          <el-select v-model="form.createdById" placeholder="请输入创建问题的用户ID" >
+          <el-select v-model="form.createdBy" placeholder="请输入创建问题的用户ID" >
             <el-option
               v-for="item in createdByIds"
-              :key="item.createdById"
-              :label="item.createdByName"
-              :value="item.createdById">
+              :key="item.userId"
+              :label="item.userName"
+              :value="item.userId">
             </el-option>
           </el-select>
         </el-form-item>
@@ -199,12 +228,12 @@
           <el-input v-model="form.assignedTo" placeholder="请输入任务分配给的用户ID" />
         </el-form-item> -->
         <el-form-item label="任务分配给的用户ID" prop="createdById">
-          <el-select v-model="form.assignedToId" placeholder="请输入任务分配给的用户ID" >
+          <el-select v-model="form.assignedTo" placeholder="请输入任务分配给的用户ID" >
             <el-option
               v-for="item in assignedToIds"
-              :key="item.assignedToId"
-              :label="item.assignedToName"
-              :value="item.assignedToId">
+              :key="item.userId"
+              :label="item.userName"
+              :value="item.userId">
             </el-option>
           </el-select>
         </el-form-item>
@@ -279,7 +308,9 @@ export default {
       },
       projectIds:[],
       createdByIds:[],
-      assignedToIds:[]
+      assignedToIds:[],
+      statusTypes:[{label:"待办",value:"待办"},{label:"进行中",value:"进行中"},{label:"已完成",value:"已完成"}],
+      priorityTypes:[{label:"高",value:"高"},{label:"中",value:"中"},{label:"低",value:"低"}]
     };
   },
   created() {
@@ -335,7 +366,21 @@ export default {
     /** 新增按钮操作 */
     handleAdd() {
       getConnectionData().then(response => {
-        
+        this.projectIds = response.data.project_ids
+        this.projectIds.map(function(item){
+            item.projectName = item.projectId + "\t" + item.projectName
+            return item
+          })
+        this.createdByIds = response.data.user_ids
+        this.createdByIds.map(function(item){
+            item.userName = item.userId + "\t" + item.username
+            return item
+          })
+        this.assignedToIds = response.data.user_ids
+        this.assignedToIds.map(function(item){
+            item.userName = item.userId + "\t" + item.username
+            return item
+          })
       })
       this.reset();
       this.open = true;
