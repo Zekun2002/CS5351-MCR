@@ -255,7 +255,7 @@ export default {
       // 用于存放获取的项目id列表
       projectIds:[],
       // 用于存放获取的用户id列表
-      useIds:[]
+      userIds:[]
     };
   },
   created() {
@@ -336,6 +336,7 @@ export default {
       const issueId = row.issueId || this.ids
       getIssues(issueId).then(response => {
         this.form = response.data;
+        this.form.userId = this.form.createdBy
         this.open = true;
         this.title = "修改问题";
       });
