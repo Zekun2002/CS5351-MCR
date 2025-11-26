@@ -160,8 +160,18 @@
     <!-- 添加或修改任务对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="任务所属项目ID" prop="projectId">
+        <!-- <el-form-item label="任务所属项目ID" prop="projectId">
           <el-input v-model="form.projectId" placeholder="请输入任务所属项目ID" />
+        </el-form-item> -->
+        <el-form-item label="问题所属项目ID" prop="projectId">
+          <el-select v-model="form.projectId" placeholder="请输入问题所属任务ID" >
+            <el-option
+              v-for="item in projectIds"
+              :key="item.projectId"
+              :label="item.projectName"
+              :value="item.projectId">
+            </el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="任务名称" prop="taskName">
           <el-input v-model="form.taskName" placeholder="请输入任务名称" />
@@ -172,11 +182,31 @@
         <el-form-item label="任务优先级" prop="priority">
           <el-input v-model="form.priority" placeholder="请输入任务优先级" />
         </el-form-item>
-        <el-form-item label="创建任务的用户ID" prop="createdBy">
+        <!-- <el-form-item label="创建任务的用户ID" prop="createdBy">
           <el-input v-model="form.createdBy" placeholder="请输入创建任务的用户ID" />
+        </el-form-item> -->
+        <el-form-item label="创建问题的用户ID" prop="createdById">
+          <el-select v-model="form.createdById" placeholder="请输入创建问题的用户ID" >
+            <el-option
+              v-for="item in createdByIds"
+              :key="item.createdById"
+              :label="item.createdByName"
+              :value="item.createdById">
+            </el-option>
+          </el-select>
         </el-form-item>
-        <el-form-item label="任务分配给的用户ID" prop="assignedTo">
+        <!-- <el-form-item label="任务分配给的用户ID" prop="assignedTo">
           <el-input v-model="form.assignedTo" placeholder="请输入任务分配给的用户ID" />
+        </el-form-item> -->
+        <el-form-item label="任务分配给的用户ID" prop="createdById">
+          <el-select v-model="form.assignedToId" placeholder="请输入任务分配给的用户ID" >
+            <el-option
+              v-for="item in assignedToIds"
+              :key="item.assignedToId"
+              :label="item.assignedToName"
+              :value="item.assignedToId">
+            </el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="任务创建时间" prop="createdAt">
           <el-date-picker clearable
@@ -204,7 +234,7 @@
 </template>
 
 <script>
-import { listTasks, getTasks, delTasks, addTasks, updateTasks } from "@/api/ruoyi-project/tasks";
+import { listTasks, getTasks, delTasks, addTasks, updateTasks,getConnectionData } from "@/api/ruoyi-project/tasks";
 
 export default {
   name: "Tasks",
@@ -246,7 +276,10 @@ export default {
       form: {},
       // 表单校验
       rules: {
-      }
+      },
+      projectIds:[],
+      createdByIds:[],
+      assignedToIds:[]
     };
   },
   created() {
@@ -301,6 +334,9 @@ export default {
     },
     /** 新增按钮操作 */
     handleAdd() {
+      getConnectionData().then(response => {
+        
+      })
       this.reset();
       this.open = true;
       this.title = "添加任务";

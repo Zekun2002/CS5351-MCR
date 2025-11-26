@@ -17,6 +17,26 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
+      <el-form-item label="问题类型" prop="issueType">
+        <el-select v-model="queryParams.issueType" placeholder="请输入问题类型" >
+            <el-option
+              v-for="item in issueTypes"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+      </el-form-item>
+      <el-form-item label="问题状态" prop="status">
+        <el-select v-model="queryParams.status" placeholder="请输入问题状态" >
+            <el-option
+              v-for="item in statusTypes"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+      </el-form-item>
       <el-form-item label="创建问题的用户ID" prop="createdBy">
         <el-input
           v-model="queryParams.createdBy"
@@ -182,6 +202,26 @@
             </el-option>
           </el-select>
         </el-form-item>
+        <el-form-item label="问题类型" prop="issueType">
+          <el-select v-model="form.issueType" placeholder="请输入问题类型" >
+            <el-option
+              v-for="item in issueTypes"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="问题状态" prop="status">
+          <el-select v-model="form.status" placeholder="请输入问题状态" >
+            <el-option
+              v-for="item in statusTypes"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+        </el-form-item>
         <el-form-item label="问题创建时间" prop="createdAt">
           <el-date-picker clearable
             v-model="form.createdAt"
@@ -255,7 +295,10 @@ export default {
       // 用于存放获取的项目id列表
       projectIds:[],
       // 用于存放获取的用户id列表
-      userIds:[]
+      userIds:[],
+      // 用于所有的问题类型
+      issueTypes:[{label:"项目bug",value:"Bug"},{label:"技术债务",value:"技术债务"}],
+      statusTypes:[{label:"待办",value:"待办"},{label:"进行中",value:"进行中"},{label:"已解决",value:"已解决"}]
     };
   },
   created() {
@@ -334,6 +377,24 @@ export default {
     handleUpdate(row) {
       this.reset();
       const issueId = row.issueId || this.ids
+      console.log(row)
+      getConnectionData().then(response => {
+          this.taskIds = response.data.task_ids
+          this.taskIds.map(function(item){
+            item.taskName = item.taskId + "\t" + item.taskName
+            return item
+          })
+          this.projectIds = response.data.project_ids
+          this.projectIds.map(function(item){
+            item.projectName = item.projectId + "\t" + item.projectName
+            return item
+          })
+          this.userIds = response.data.user_ids
+          this.userIds.map(function(item){
+            item.userName = item.userId + "\t" + item.username
+            return item
+          })
+      });
       getIssues(issueId).then(response => {
         this.form = response.data;
         this.form.userId = this.form.createdBy

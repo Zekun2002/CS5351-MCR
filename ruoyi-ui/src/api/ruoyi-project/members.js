@@ -42,3 +42,10 @@ export function delMembers(taskMemberId) {
     method: 'delete'
   })
 }
+
+export function getConnectionData(){
+  return request({
+    url: "111",
+    method: 'get'
+  })
+}

@@ -118,11 +118,31 @@
     <!-- 添加或修改任务成员对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="任务ID" prop="taskId">
+        <!-- <el-form-item label="任务ID" prop="taskId">
           <el-input v-model="form.taskId" placeholder="请输入任务ID" />
+        </el-form-item> -->
+        <el-form-item label="任务ID" prop="taskId">
+          <el-select v-model="form.taskId" placeholder="请输入创建问题的用户ID" >
+            <el-option
+              v-for="item in taskIds"
+              :key="item.taskId"
+              :label="item.taskName"
+              :value="item.taskId">
+            </el-option>
+          </el-select>
         </el-form-item>
-        <el-form-item label="用户ID" prop="userId">
+        <!-- <el-form-item label="用户ID" prop="userId">
           <el-input v-model="form.userId" placeholder="请输入用户ID" />
+        </el-form-item> -->
+        <el-form-item label="用户ID" prop="userId">
+          <el-select v-model="form.userId" placeholder="请输入创建问题的用户ID" >
+            <el-option
+              v-for="item in userIds"
+              :key="item.userId"
+              :label="item.userName"
+              :value="item.userId">
+            </el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="任务分配给成员的时间" prop="assignedAt">
           <el-date-picker clearable
@@ -142,7 +162,7 @@
 </template>
 
 <script>
-import { listMembers, getMembers, delMembers, addMembers, updateMembers } from "@/api/ruoyi-project/members";
+import { listMembers, getMembers, delMembers, addMembers, updateMembers, getConnectionData } from "@/api/ruoyi-project/members";
 
 export default {
   name: "Members",
@@ -184,7 +204,9 @@ export default {
         userId: [
           { required: true, message: "用户ID不能为空", trigger: "blur" }
         ],
-      }
+      },
+      taskIds:[],
+      userIds:[]
     };
   },
   created() {
@@ -233,6 +255,9 @@ export default {
     },
     /** 新增按钮操作 */
     handleAdd() {
+      getConnectionData().then(response => {
+        
+      })
       this.reset();
       this.open = true;
       this.title = "添加任务成员";

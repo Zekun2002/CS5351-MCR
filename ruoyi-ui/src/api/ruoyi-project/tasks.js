@@ -42,3 +42,10 @@ export function delTasks(taskId) {
     method: 'delete'
   })
 }
+
+export function getConnectionData(){
+  return request({
+    url: '',
+    method: 'get'
+  })
+}
