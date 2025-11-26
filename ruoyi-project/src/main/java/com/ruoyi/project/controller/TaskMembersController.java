@@ -56,7 +56,7 @@ public class TaskMembersController extends BaseController {
     @GetMapping("/allIds")
     public AjaxResult allIds() {
         Map<String, List<? extends BaseEntity>> idsMap = new HashMap<String, List<? extends BaseEntity>>() {{
-            put("project_ids", tasksService.selectTasksIdList());
+            put("task_ids", tasksService.selectTasksIdList());
             put("user_ids", usersService.selectUsersIdList());
         }};
         return success(idsMap);
