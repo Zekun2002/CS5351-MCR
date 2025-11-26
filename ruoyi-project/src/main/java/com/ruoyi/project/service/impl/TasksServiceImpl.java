@@ -1,13 +1,14 @@
 package com.ruoyi.project.service.impl;
 
-import java.util.List;
-
-import com.ruoyi.project.domain.Issues;
+import com.ruoyi.project.domain.TaskMembers;
+import com.ruoyi.project.domain.Tasks;
+import com.ruoyi.project.mapper.TaskMembersMapper;
+import com.ruoyi.project.mapper.TasksMapper;
+import com.ruoyi.project.service.ITasksService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.ruoyi.project.mapper.TasksMapper;
-import com.ruoyi.project.domain.Tasks;
-import com.ruoyi.project.service.ITasksService;
+
+import java.util.List;
 
 /**
  * 任务Service业务层处理
@@ -19,6 +20,9 @@ import com.ruoyi.project.service.ITasksService;
 public class TasksServiceImpl implements ITasksService {
     @Autowired
     private TasksMapper tasksMapper;
+
+    @Autowired
+    private TaskMembersMapper taskMembersMapper;
 
     /**
      * 查询任务
@@ -61,7 +65,12 @@ public class TasksServiceImpl implements ITasksService {
      */
     @Override
     public int insertTasks(Tasks tasks) {
-        return tasksMapper.insertTasks(tasks);
+        tasksMapper.insertTasks(tasks);
+        TaskMembers taskMembers = new TaskMembers();
+        taskMembers.setTaskId(tasks.getTaskId());
+        taskMembers.setUserId(tasks.getAssignedTo());
+        taskMembers.setAssignedAt(tasks.getCreatedAt());
+        return taskMembersMapper.insertTaskMembers(taskMembers);
     }
 
     /**

@@ -19,14 +19,13 @@
             <result property="projectName" column="project_name"/>
         </association>
 
-        <association property="tasks" javaType="com.ruoyi.project.domain.Tasks">
+        <association property="task" javaType="com.ruoyi.project.domain.Tasks">
             <result property="taskName" column="task_name"/>
         </association>
 
         <association property="creator" javaType="com.ruoyi.system.domain.Users">
             <result property="username" column="username"/>
         </association>
-
     </resultMap>
 
     <sql id="selectIssuesVo">
@@ -50,8 +49,8 @@
 
     <select id="selectIssuesByIssueId" parameterType="Long" resultMap="IssuesResult">
         select i.issue_id, i.project_id, i.task_id, i.issue_type, i.description, i.status, i.created_by, i.created_at,
-        i.updated_at, p.project_name, t.task_name, u.username from
-        issues i
+        i.updated_at, p.project_name, t.task_name, u.username
+        from issues i
         left join projects p
         on i.project_id = p.project_id
         left join tasks t

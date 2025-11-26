@@ -1,14 +1,22 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ruoyi.project.mapper.TaskMembersMapper">
-    
+
     <resultMap type="TaskMembers" id="TaskMembersResult">
-        <result property="taskMemberId"    column="task_member_id"    />
-        <result property="taskId"    column="task_id"    />
-        <result property="userId"    column="user_id"    />
-        <result property="assignedAt"    column="assigned_at"    />
+        <result property="taskMemberId" column="task_member_id"/>
+        <result property="taskId" column="task_id"/>
+        <result property="userId" column="user_id"/>
+        <result property="assignedAt" column="assigned_at"/>
+
+        <association property="task" javaType="com.ruoyi.project.domain.Tasks">
+            <result property="taskName" column="task_name"/>
+        </association>
+
+        <association property="contributor" javaType="com.ruoyi.system.domain.Users">
+            <result property="username" column="username"/>
+        </association>
     </resultMap>
 
     <sql id="selectTaskMembersVo">
@@ -17,16 +25,21 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="selectTaskMembersList" parameterType="TaskMembers" resultMap="TaskMembersResult">
         <include refid="selectTaskMembersVo"/>
-        <where>  
-            <if test="taskId != null "> and task_id = #{taskId}</if>
-            <if test="userId != null "> and user_id = #{userId}</if>
-            <if test="assignedAt != null "> and assigned_at = #{assignedAt}</if>
+        <where>
+            <if test="taskId != null ">and task_id = #{taskId}</if>
+            <if test="userId != null ">and user_id = #{userId}</if>
+            <if test="assignedAt != null ">and assigned_at = #{assignedAt}</if>
         </where>
     </select>
-    
+
     <select id="selectTaskMembersByTaskMemberId" parameterType="Long" resultMap="TaskMembersResult">
-        <include refid="selectTaskMembersVo"/>
-        where task_member_id = #{taskMemberId}
+        select tm.task_member_id, tm.task_id, tm.user_id, tm.assigned_at, t.task_name, u.username
+        from task_members tm
+        left join tasks t
+        on tm.task_id = t.task_id
+        left join users u
+        on tm.user_id = u.user_id
+        where tm.task_member_id = #{taskMemberId}
     </select>
 
     <insert id="insertTaskMembers" parameterType="TaskMembers" useGeneratedKeys="true" keyProperty="taskMemberId">
@@ -35,12 +48,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="taskId != null">task_id,</if>
             <if test="userId != null">user_id,</if>
             <if test="assignedAt != null">assigned_at,</if>
-         </trim>
+        </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="taskId != null">#{taskId},</if>
             <if test="userId != null">#{userId},</if>
             <if test="assignedAt != null">#{assignedAt},</if>
-         </trim>
+        </trim>
     </insert>
 
     <update id="updateTaskMembers" parameterType="TaskMembers">
@@ -58,7 +71,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </delete>
 
     <delete id="deleteTaskMembersByTaskMemberIds" parameterType="String">
-        delete from task_members where task_member_id in 
+        delete from task_members where task_member_id in
         <foreach item="taskMemberId" collection="array" open="(" separator="," close=")">
             #{taskMemberId}
         </foreach>

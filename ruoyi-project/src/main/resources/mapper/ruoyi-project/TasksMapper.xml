@@ -15,6 +15,18 @@
         <result property="assignedTo" column="assigned_to"/>
         <result property="createdAt" column="created_at"/>
         <result property="updatedAt" column="updated_at"/>
+
+        <association property="project" javaType="com.ruoyi.project.domain.Projects">
+            <result property="projectName" column="project_name"/>
+        </association>
+
+        <association property="creator" javaType="com.ruoyi.system.domain.Users">
+            <result property="username" column="creator_name"/>
+        </association>
+
+        <association property="leader" javaType="com.ruoyi.system.domain.Users">
+            <result property="username" column="leader_name"/>
+        </association>
     </resultMap>
 
     <sql id="selectTasksVo">
@@ -38,8 +50,17 @@
     </select>
 
     <select id="selectTasksByTaskId" parameterType="Long" resultMap="TasksResult">
-        <include refid="selectTasksVo"/>
-        where task_id = #{taskId}
+        select t.task_id, t.project_id, t.task_name, t.description, t.priority, t.status, t.created_by,
+        t.assigned_to, t.created_at, t.updated_at, p.project_name, u1.username as creator_name, u2.username as
+        leader_name
+        from tasks t
+        left join projects p
+        on t.project_id = p.project_id
+        inner join users u1
+        on t.created_by = u1.user_id
+        inner join users u2
+        on t.assigned_to = u2.user_id
+        where t.task_id = #{taskId}
     </select>
 
     <insert id="insertTasks" parameterType="Tasks" useGeneratedKeys="true" keyProperty="taskId">
