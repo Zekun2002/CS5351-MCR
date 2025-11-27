@@ -1,49 +1,49 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="项目id" prop="projectId">
+    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" >
+      <el-form-item label="Project ID" prop="projectId">
         <el-input
           v-model="queryParams.projectId"
-          placeholder="请输入项目id"
+          placeholder="Please enter the project ID"
           clearable
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="报告日期" prop="reportDate">
+      <el-form-item label="Report Date" prop="reportDate">
         <el-date-picker clearable
           v-model="queryParams.reportDate"
           type="date"
           value-format="yyyy-MM-dd"
-          placeholder="请选择报告日期">
+          placeholder="Please select the report date">
         </el-date-picker>
       </el-form-item>
-      <el-form-item label="项目进度" prop="progress">
+      <el-form-item label="Project Progess" prop="progress">
         <el-input
           v-model="queryParams.progress"
-          placeholder="请输入项目进度"
+          placeholder="Please select the project progess"
           clearable
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="预期完成日期" prop="expectedEndDate">
+      <el-form-item label="Expected Completion Date" prop="expectedEndDate">
         <el-date-picker clearable
           v-model="queryParams.expectedEndDate"
           type="date"
           value-format="yyyy-MM-dd"
-          placeholder="请选择预期完成日期">
+          placeholder="Please select the expected completion date">
         </el-date-picker>
       </el-form-item>
-      <el-form-item label="实际完成日期" prop="actualEndDate">
+      <el-form-item label="Actual Completion Date" prop="actualEndDate">
         <el-date-picker clearable
           v-model="queryParams.actualEndDate"
           type="date"
           value-format="yyyy-MM-dd"
-          placeholder="请选择实际完成日期">
+          placeholder="Please select the actual completion date">
         </el-date-picker>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
-        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">search</el-button>
+        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">reset</el-button>
       </el-form-item>
     </el-form>
 
@@ -56,7 +56,7 @@
           size="mini"
           @click="handleAdd"
           v-hasPermi="['ruoyi-progress:reports:add']"
-        >新增</el-button>
+        >add</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -67,7 +67,7 @@
           :disabled="single"
           @click="handleUpdate"
           v-hasPermi="['ruoyi-progress:reports:edit']"
-        >修改</el-button>
+        >update</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -78,7 +78,7 @@
           :disabled="multiple"
           @click="handleDelete"
           v-hasPermi="['ruoyi-progress:reports:remove']"
-        >删除</el-button>
+        >delete</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -88,32 +88,40 @@
           size="mini"
           @click="handleExport"
           v-hasPermi="['ruoyi-progress:reports:export']"
-        >导出</el-button>
+        >export</el-button>
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
     <el-table v-loading="loading" :data="reportsList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="进度报告id" align="center" prop="reportId" />
-      <el-table-column label="项目id" align="center" prop="projectId" />
-      <el-table-column label="报告日期" align="center" prop="reportDate" width="180">
+      <el-table-column label="Progress Report ID" align="center" prop="reportId" />
+      <el-table-column label="Project ID" align="center" prop="projectId" />
+      <el-table-column label="Report Date" align="center" prop="reportDate" width="180">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.reportDate, '{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="项目进度" align="center" prop="progress" />
-      <el-table-column label="预期完成日期" align="center" prop="expectedEndDate" width="180">
+      <!-- <el-table-column label="项目进度" align="center" prop="progress" /> -->
+      <el-table-column label="Project Progress" align="center" prop="progress" width="180">
+        <!-- <template slot-scope="scope">
+          <span>{{ parseTime(scope.row.expectedEndDate, '{y}-{m}-{d}') }}</span>
+        </template> -->
+        <template slot-scope="scope">
+          <el-progress :text-inside="true" :stroke-width="26" :percentage="scope.row.progress"></el-progress>
+        </template>
+      </el-table-column>
+      <el-table-column label="Expected Completion Date" align="center" prop="expectedEndDate">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.expectedEndDate, '{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="实际完成日期" align="center" prop="actualEndDate" width="180">
+      <el-table-column label="Actual Completion Date" align="center" prop="actualEndDate" >
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.actualEndDate, '{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <el-table-column label="Operation" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
             size="mini"
@@ -121,14 +129,14 @@
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
             v-hasPermi="['ruoyi-progress:reports:edit']"
-          >修改</el-button>
+          >update</el-button>
           <el-button
             size="mini"
             type="text"
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
             v-hasPermi="['ruoyi-progress:reports:remove']"
-          >删除</el-button>
+          >delete</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -142,42 +150,54 @@
     />
 
     <!-- 添加或修改进度报告表对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
-      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="项目id" prop="projectId">
-          <el-input v-model="form.projectId" placeholder="请输入项目id" />
+    <el-dialog :title="title" :visible.sync="open" width="700px" append-to-body>
+      <el-form ref="form" :model="form" :rules="rules" label-width="200px">
+        <el-form-item label="Project ID" prop="projectId">
+          <el-select v-model="form.projectId" placeholder="Please select a project" clearable>
+            <el-option
+              v-for="item in projectList"
+              :key="item.projectId"
+              :label="item.projectName"
+              :value="item.projectId">
+            </el-option>
+          </el-select>
         </el-form-item>
-        <el-form-item label="报告日期" prop="reportDate">
+        <el-form-item label="Report Date" prop="reportDate">
           <el-date-picker clearable
             v-model="form.reportDate"
             type="date"
             value-format="yyyy-MM-dd"
-            placeholder="请选择报告日期">
+            placeholder="Please select the report date">
           </el-date-picker>
         </el-form-item>
-        <el-form-item label="项目进度" prop="progress">
-          <el-input v-model="form.progress" placeholder="请输入项目进度" />
+        <el-form-item label="Project Progress" prop="progress">
+          <template>
+            <div class="block">
+              <el-slider v-model="form.progress" show-input :disabled="isDisabled"></el-slider>
+            </div>
+          </template>
+          <!-- <el-input v-model="form.progress" placeholder="请输入项目进度" /> -->
         </el-form-item>
-        <el-form-item label="预期完成日期" prop="expectedEndDate">
+        <el-form-item label="Expected completion date" prop="expectedEndDate">
           <el-date-picker clearable
             v-model="form.expectedEndDate"
             type="date"
             value-format="yyyy-MM-dd"
-            placeholder="请选择预期完成日期">
+            placeholder="Please select the expected completion date" size="large">
           </el-date-picker>
         </el-form-item>
-        <el-form-item label="实际完成日期" prop="actualEndDate">
+        <el-form-item label="Actual Completion Date" prop="actualEndDate" v-if="form.progress != null && form.progress >= 100">
           <el-date-picker clearable
             v-model="form.actualEndDate"
             type="date"
             value-format="yyyy-MM-dd"
-            placeholder="请选择实际完成日期">
+            placeholder="Please select the actual completion date">
           </el-date-picker>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="submitForm">确 定</el-button>
-        <el-button @click="cancel">取 消</el-button>
+        <el-button type="primary" @click="submitForm">submit</el-button>
+        <el-button @click="cancel">cancel</el-button>
       </div>
     </el-dialog>
   </div>
@@ -185,10 +205,35 @@
 
 <script>
 import { listReports, getReports, delReports, addReports, updateReports } from "@/api/ruoyi-progress/reports";
+import { listProject } from "@/api/ruoyi-project/project";
 
 export default {
   name: "Reports",
   data() {
+    // 日期验证函数
+    const validateExpectedEndDate = (rule, value, callback) => {
+      if (!value) {
+        callback();
+        return;
+      }
+      if (this.form.reportDate && value < this.form.reportDate) {
+        callback(new Error('预期完成日期不能早于报告日期'));
+      } else {
+        callback();
+      }
+    };
+    const validateActualEndDate = (rule, value, callback) => {
+      if (!value) {
+        callback();
+        return;
+      }
+      if (this.form.reportDate && value < this.form.reportDate) {
+        callback(new Error('实际完成日期不能早于报告日期'));
+      } else {
+        callback();
+      }
+    };
+    
     return {
       // 遮罩层
       loading: true,
@@ -208,6 +253,8 @@ export default {
       title: "",
       // 是否显示弹出层
       open: false,
+      // 项目列表（用于下拉选择）
+      projectList: [],
       // 查询参数
       queryParams: {
         pageNum: 1,
@@ -222,13 +269,38 @@ export default {
       form: {},
       // 表单校验
       rules: {
-      }
+        projectId: [
+          { required: true, message: "项目不能为空", trigger: "change" }
+        ],
+        reportDate: [
+          { required: true, message: "报告日期不能为空", trigger: "change" }
+        ],
+        progress: [
+          { required: true, message: "项目进度不能为空", trigger: "change" },
+          { type: 'number', min: 0, max: 100, message: "进度必须在0-100之间", trigger: "change" }
+        ],
+        expectedEndDate: [
+          { validator: validateExpectedEndDate, trigger: "change" }
+        ],
+        actualEndDate: [
+          { validator: validateActualEndDate, trigger: "change" }
+        ]
+      },
+      // 是否禁用项目进度条
+      isDisabled:true
     };
   },
   created() {
     this.getList();
+    this.loadProjectList();
   },
   methods: {
+    /** 加载项目列表 */
+    loadProjectList() {
+      listProject({}).then(response => {
+        this.projectList = response.rows || [];
+      });
+    },
     /** 查询进度报告表列表 */
     getList() {
       this.loading = true;
@@ -274,32 +346,44 @@ export default {
     /** 新增按钮操作 */
     handleAdd() {
       this.reset();
+      this.loadProjectList();
+      this.isDisabled = true
+      this.form.progress = 0
+      // 设置默认报告日期为当前时间
+      const now = new Date();
+      this.form.reportDate = this.parseTime(now, '{y}-{m}-{d}');
       this.open = true;
-      this.title = "添加进度报告表";
+      this.title = "Add Progress Reoprt Table";
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
       this.reset();
+      this.loadProjectList();
+      this.isDisabled = false
       const reportId = row.reportId || this.ids
       getReports(reportId).then(response => {
         this.form = response.data;
         this.open = true;
-        this.title = "修改进度报告表";
+        this.title = "Update Progress Reoprt Table";
       });
     },
     /** 提交按钮 */
     submitForm() {
       this.$refs["form"].validate(valid => {
         if (valid) {
+          // 如果进度未达到100%，清空实际完成日期
+          if (this.form.progress == null || this.form.progress < 100) {
+            this.form.actualEndDate = null;
+          }
           if (this.form.reportId != null) {
             updateReports(this.form).then(response => {
-              this.$modal.msgSuccess("修改成功");
+              this.$modal.msgSuccess("Successfully modified");
               this.open = false;
               this.getList();
             });
           } else {
             addReports(this.form).then(response => {
-              this.$modal.msgSuccess("新增成功");
+              this.$modal.msgSuccess("Successfully added");
               this.open = false;
               this.getList();
             });
@@ -310,11 +394,11 @@ export default {
     /** 删除按钮操作 */
     handleDelete(row) {
       const reportIds = row.reportId || this.ids;
-      this.$modal.confirm('是否确认删除进度报告表编号为"' + reportIds + '"的数据项？').then(function() {
+      this.$modal.confirm('Are you sure you want to delete the data entry with progress report ID ' + reportIds).then(function() {
         return delReports(reportIds);
       }).then(() => {
         this.getList();
-        this.$modal.msgSuccess("删除成功");
+        this.$modal.msgSuccess("Successfully deleted");
       }).catch(() => {});
     },
     /** 导出按钮操作 */

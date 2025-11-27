@@ -180,8 +180,15 @@
             placeholder="请选择项目预计结束日期">
           </el-date-picker>
         </el-form-item>
-        <el-form-item label="创建者id" prop="createdBy">
-          <el-input v-model="form.createdBy" placeholder="请输入创建者id" />
+        <el-form-item label="创建者" prop="createdBy">
+          <el-select v-model="form.createdBy" placeholder="请选择创建者" clearable filterable>
+            <el-option
+              v-for="item in userList"
+              :key="item.userId"
+              :label="item.username + ' (ID: ' + item.userId + ')'"
+              :value="item.userId">
+            </el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="项目创建时间" prop="createdAt">
           <el-date-picker clearable
@@ -210,10 +217,57 @@
 
 <script>
 import { listProject, getProject, delProject, addProject, updateProject } from "@/api/ruoyi-project/project";
+import { listUsers } from "@/api/system/users";
 
 export default {
   name: "Project",
   data() {
+    // 日期验证函数
+    const validateStartDate = (rule, value, callback) => {
+      if (!value) {
+        callback();
+        return;
+      }
+      if (this.form.endDate && value > this.form.endDate) {
+        callback(new Error('项目开始日期不能晚于预计结束日期'));
+      } else {
+        callback();
+      }
+    };
+    const validateEndDate = (rule, value, callback) => {
+      if (!value) {
+        callback();
+        return;
+      }
+      if (this.form.startDate && value < this.form.startDate) {
+        callback(new Error('项目预计结束日期不能早于开始日期'));
+      } else {
+        callback();
+      }
+    };
+    const validateCreatedAt = (rule, value, callback) => {
+      if (!value) {
+        callback();
+        return;
+      }
+      if (this.form.updatedAt && value > this.form.updatedAt) {
+        callback(new Error('项目创建时间不能晚于更新时间'));
+      } else {
+        callback();
+      }
+    };
+    const validateUpdatedAt = (rule, value, callback) => {
+      if (!value) {
+        callback();
+        return;
+      }
+      if (this.form.createdAt && value < this.form.createdAt) {
+        callback(new Error('项目更新时间不能早于创建时间'));
+      } else {
+        callback();
+      }
+    };
+    
     return {
       // 遮罩层
       loading: true,
@@ -233,6 +287,8 @@ export default {
       title: "",
       // 是否显示弹出层
       open: false,
+      // 用户列表（用于下拉选择）
+      userList: [],
       // 查询参数
       queryParams: {
         pageNum: 1,
@@ -249,13 +305,38 @@ export default {
       form: {},
       // 表单校验
       rules: {
+        projectName: [
+          { required: true, message: "项目名称不能为空", trigger: "blur" }
+        ],
+        startDate: [
+          { validator: validateStartDate, trigger: "change" }
+        ],
+        endDate: [
+          { validator: validateEndDate, trigger: "change" }
+        ],
+        createdAt: [
+          { validator: validateCreatedAt, trigger: "change" }
+        ],
+        updatedAt: [
+          { validator: validateUpdatedAt, trigger: "change" }
+        ],
+        createdBy: [
+          { required: true, message: "创建者不能为空", trigger: "change" }
+        ]
       }
     };
   },
   created() {
     this.getList();
+    this.loadUserList();
   },
   methods: {
+    /** 加载用户列表 */
+    loadUserList() {
+      listUsers({}).then(response => {
+        this.userList = response.rows || [];
+      });
+    },
     /** 查询项目管理列表 */
     getList() {
       this.loading = true;
@@ -303,15 +384,24 @@ export default {
     /** 新增按钮操作 */
     handleAdd() {
       this.reset();
+      this.loadUserList();
+      // 设置默认创建时间为当前时间
+      const now = new Date();
+      this.form.createdAt = this.parseTime(now, '{y}-{m}-{d}');
+      this.form.updatedAt = this.parseTime(now, '{y}-{m}-{d}');
       this.open = true;
       this.title = "添加项目管理";
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
       this.reset();
+      this.loadUserList();
       const projectId = row.projectId || this.ids
       getProject(projectId).then(response => {
         this.form = response.data;
+        // 更新时自动设置更新时间为当前时间
+        const now = new Date();
+        this.form.updatedAt = this.parseTime(now, '{y}-{m}-{d}');
         this.open = true;
         this.title = "修改项目管理";
       });

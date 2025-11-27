@@ -16,6 +16,7 @@ import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.enums.BusinessType;
+import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.project.domain.ProjectMembers;
 import com.ruoyi.project.service.IProjectMembersService;
 import com.ruoyi.common.utils.poi.ExcelUtil;
@@ -77,6 +78,11 @@ public class ProjectMembersController extends BaseController
     @PostMapping
     public AjaxResult add(@RequestBody ProjectMembers projectMembers)
     {
+        // 检查当前用户是否为该项目的PM
+        Long userId = SecurityUtils.getUserId();
+        if (projectMembers.getProjectId() != null && !projectMembersService.isProjectPM(userId, projectMembers.getProjectId())) {
+            return error("只有项目PM才能添加项目成员");
+        }
         return toAjax(projectMembersService.insertProjectMembers(projectMembers));
     }
 
@@ -88,6 +94,11 @@ public class ProjectMembersController extends BaseController
     @PutMapping
     public AjaxResult edit(@RequestBody ProjectMembers projectMembers)
     {
+        // 检查当前用户是否为该项目的PM
+        Long userId = SecurityUtils.getUserId();
+        if (projectMembers.getProjectId() != null && !projectMembersService.isProjectPM(userId, projectMembers.getProjectId())) {
+            return error("只有项目PM才能修改项目成员");
+        }
         return toAjax(projectMembersService.updateProjectMembers(projectMembers));
     }
 
@@ -99,6 +110,16 @@ public class ProjectMembersController extends BaseController
 	@DeleteMapping("/{memberIds}")
     public AjaxResult remove(@PathVariable Long[] memberIds)
     {
+        // 检查当前用户是否为该项目的PM
+        Long userId = SecurityUtils.getUserId();
+        for (Long memberId : memberIds) {
+            ProjectMembers member = projectMembersService.selectProjectMembersByMemberId(memberId);
+            if (member != null && member.getProjectId() != null) {
+                if (!projectMembersService.isProjectPM(userId, member.getProjectId())) {
+                    return error("只有项目PM才能删除项目成员");
+                }
+            }
+        }
         return toAjax(projectMembersService.deleteProjectMembersByMemberIds(memberIds));
     }
 }
