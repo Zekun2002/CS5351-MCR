@@ -84,10 +84,16 @@ public class TasksServiceImpl implements ITasksService {
         Tasks t = tasksMapper.selectTasksByTaskId(tasks.getTaskId());
 
         TaskMembers taskMember = new TaskMembers();
-        taskMember.setTaskId(tasks.getTaskId());
+        taskMember.setTaskId(t.getTaskId());
+        taskMember.setUserId(t.getAssignedTo());
+        taskMembersMapper.deleteTaskMembers(taskMember);
+
         taskMember.setUserId(tasks.getAssignedTo());
         taskMember.setAssignedAt(tasks.getUpdatedAt());
-        taskMembersMapper.updateTaskMembersById(t.getAssignedTo(), taskMember);
+
+        if (taskMembersMapper.selectTaskMembersByTaskAndUserId(taskMember) == null) {
+            taskMembersMapper.insertTaskMembers(taskMember);
+        }
 
         return tasksMapper.updateTasks(tasks);
     }

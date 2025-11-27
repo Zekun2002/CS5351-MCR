@@ -66,14 +66,13 @@
         where task_member_id = #{taskMemberId}
     </update>
 
-    <update id="updateTaskMembersById">
-        update task_members
-        <trim prefix="SET" suffixOverrides=",">
-            <if test="taskMember.userId != null">user_id = #{taskMember.userId},</if>
-            <if test="taskMember.assignedAt != null">assigned_at = #{taskMember.assignedAt},</if>
-        </trim>
-        where user_id = #{userId} and task_id = #{taskMember.taskId}
-    </update>
+    <select id="selectTaskMembersByTaskAndUserId" parameterType="TaskMembers" resultMap="TaskMembersResult">
+        select * from task_members
+        <where>
+            <if test="taskId != null">and task_id = #{taskId}</if>
+            <if test="userId != null">and user_id = #{userId}</if>
+        </where>
+    </select>
 
     <delete id="deleteTaskMembersByTaskMemberId" parameterType="Long">
         delete from task_members where task_member_id = #{taskMemberId}
@@ -84,5 +83,9 @@
         <foreach item="taskMemberId" collection="array" open="(" separator="," close=")">
             #{taskMemberId}
         </foreach>
+    </delete>
+
+    <delete id="deleteTaskMembers" parameterType="TaskMembers">
+        delete from task_members where task_id = #{taskId} and user_id = #{userId}
     </delete>
 </mapper>

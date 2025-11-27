@@ -1,7 +1,6 @@
 package com.ruoyi.project.mapper;
 
 import com.ruoyi.project.domain.TaskMembers;
-import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -45,13 +44,12 @@ public interface TaskMembersMapper {
     public int updateTaskMembers(TaskMembers taskMembers);
 
     /**
-     * 根据任务ID & 负责人ID修改任务成员
+     * 根据任务ID & 负责人ID查询任务成员
      *
-     * @param taskMember 任务成员
+     * @param taskMembers 任务成员
      * @return 结果
      */
-    public int updateTaskMembersById(@Param("userId") Long userId,
-                                     @Param("taskMember") TaskMembers taskMember);
+    public TaskMembers selectTaskMembersByTaskAndUserId(TaskMembers taskMembers);
 
     /**
      * 删除任务成员
@@ -68,4 +66,13 @@ public interface TaskMembersMapper {
      * @return 结果
      */
     public int deleteTaskMembersByTaskMemberIds(Long[] taskMemberIds);
+
+    /**
+     * 根据任务ID & 用户ID删除任务成员
+     *
+     * @param taskMembers 需要删除的数据主键集合
+     * @return 结果
+     */
+    public int deleteTaskMembers(TaskMembers taskMembers);
+
 }
