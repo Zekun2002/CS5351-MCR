@@ -1,13 +1,18 @@
 package com.ruoyi.project.service.impl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import com.ruoyi.project.mapper.ProjectsMapper;
 import com.ruoyi.project.domain.Projects;
+import com.ruoyi.project.domain.ProjectMembers;
 import com.ruoyi.project.service.IProjectsService;
+import com.ruoyi.project.service.IProjectMembersService;
+import com.ruoyi.common.utils.SecurityUtils;
 
 /**
  * 项目管理Service业务层处理
@@ -19,6 +24,9 @@ import com.ruoyi.project.service.IProjectsService;
 public class ProjectsServiceImpl implements IProjectsService {
     @Autowired
     private ProjectsMapper projectsMapper;
+    
+    @Autowired
+    private IProjectMembersService projectMembersService;
 
     /**
      * 查询项目管理
@@ -54,8 +62,31 @@ public class ProjectsServiceImpl implements IProjectsService {
      * @return 结果
      */
     @Override
+    @Transactional
     public int insertProjects(Projects projects) {
-        return projectsMapper.insertProjects(projects);
+        // 设置创建时间和更新时间
+        Date now = new Date();
+        if (projects.getCreatedAt() == null) {
+            projects.setCreatedAt(now);
+        }
+        if (projects.getUpdatedAt() == null) {
+            projects.setUpdatedAt(now);
+        }
+        
+        // 插入项目
+        int result = projectsMapper.insertProjects(projects);
+        
+        // 如果项目创建成功，自动将创建者添加为PM
+        if (result > 0 && projects.getProjectId() != null && projects.getCreatedBy() != null) {
+            ProjectMembers projectMember = new ProjectMembers();
+            projectMember.setProjectId(projects.getProjectId());
+            projectMember.setUserId(projects.getCreatedBy());
+            projectMember.setRole("PM");
+            projectMember.setJoinedAt(now);
+            projectMembersService.insertProjectMembers(projectMember);
+        }
+        
+        return result;
     }
 
     /**

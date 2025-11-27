@@ -77,6 +77,11 @@ public class ProgressReportsController extends BaseController
     @PostMapping
     public AjaxResult add(@RequestBody ProgressReports progressReports)
     {
+        // 验证：如果进度未达到100%，不允许设置实际完成日期
+        if (progressReports.getProgress() != null && progressReports.getProgress().compareTo(new java.math.BigDecimal("100")) < 0 
+            && progressReports.getActualEndDate() != null) {
+            return error("进度未达到100%时不能设置实际完成日期");
+        }
         return toAjax(progressReportsService.insertProgressReports(progressReports));
     }
 
@@ -88,6 +93,11 @@ public class ProgressReportsController extends BaseController
     @PutMapping
     public AjaxResult edit(@RequestBody ProgressReports progressReports)
     {
+        // 验证：如果进度未达到100%，不允许设置实际完成日期
+        if (progressReports.getProgress() != null && progressReports.getProgress().compareTo(new java.math.BigDecimal("100")) < 0 
+            && progressReports.getActualEndDate() != null) {
+            return error("进度未达到100%时不能设置实际完成日期");
+        }
         return toAjax(progressReportsService.updateProgressReports(progressReports));
     }
 
