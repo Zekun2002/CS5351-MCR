@@ -1,43 +1,41 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="项目id" prop="projectId">
+    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" >
+      <el-form-item label="Project ID" prop="projectId">
         <el-input
           v-model="queryParams.projectId"
-          placeholder="请输入项目id"
+          placeholder="Please enter the project id"
           clearable
           @keyup.enter.native="handleQuery"
         />
-
-
       </el-form-item>
-      <el-form-item label="用户id" prop="userId">
+      <el-form-item label="User ID" prop="userId">
         <el-input
           v-model="queryParams.userId"
-          placeholder="请输入用户id"
+          placeholder="Please enter the user id"
           clearable
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="用户角色" prop="role">
+      <el-form-item label="User Role" prop="role">
         <el-input
           v-model="queryParams.role"
-          placeholder="请输入用户角色"
+          placeholder="Please enter the user role"
           clearable
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="用户加入项目时间" prop="joinedAt">
+      <el-form-item label="User project join date" prop="joinedAt">
         <el-date-picker clearable
           v-model="queryParams.joinedAt"
           type="date"
           value-format="yyyy-MM-dd"
-          placeholder="请选择用户加入项目时间">
+          placeholder="Please enter the project join date">
         </el-date-picker>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
-        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">search</el-button>
+        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">reset</el-button>
       </el-form-item>
     </el-form>
 
@@ -50,7 +48,7 @@
           size="mini"
           @click="handleAdd"
           v-hasPermi="['ruoyi-project:p_members:add']"
-        >新增</el-button>
+        >add</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -61,7 +59,7 @@
           :disabled="single"
           @click="handleUpdate"
           v-hasPermi="['ruoyi-project:p_members:edit']"
-        >修改</el-button>
+        >update</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -72,7 +70,7 @@
           :disabled="multiple"
           @click="handleDelete"
           v-hasPermi="['ruoyi-project:p_members:remove']"
-        >删除</el-button>
+        >delete</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -82,23 +80,23 @@
           size="mini"
           @click="handleExport"
           v-hasPermi="['ruoyi-project:p_members:export']"
-        >导出</el-button>
+        >export</el-button>
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
     <el-table v-loading="loading" :data="p_membersList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="成员id" align="center" prop="memberId" />
-      <el-table-column label="项目id" align="center" prop="projectId" />
-      <el-table-column label="用户id" align="center" prop="userId" />
-      <el-table-column label="用户角色" align="center" prop="role" />
-      <el-table-column label="用户加入项目时间" align="center" prop="joinedAt" width="180">
+      <el-table-column label="member id" align="center" prop="memberId" />
+      <el-table-column label="project id" align="center" prop="projectId" />
+      <el-table-column label="user id" align="center" prop="userId" />
+      <el-table-column label="user role" align="center" prop="role" />
+      <el-table-column label="User project join date" align="center" prop="joinedAt" width="180">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.joinedAt, '{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <el-table-column label="Operation" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
             size="mini"
@@ -106,14 +104,14 @@
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
             v-hasPermi="['ruoyi-project:p_members:edit']"
-          >修改</el-button>
+          >Update</el-button>
           <el-button
             size="mini"
             type="text"
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
             v-hasPermi="['ruoyi-project:p_members:remove']"
-          >删除</el-button>
+          >delete</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -130,10 +128,10 @@
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
 
-        <el-form-item label="项目id" prop="projectId">
+        <el-form-item label="project id" prop="projectId">
 <!--          <el-input v-model="form.projectId" placeholder="请输入项目id" />-->
 
-          <el-select v-model="form.projectId" placeholder="请输入项目id" >
+          <el-select v-model="form.projectId" placeholder="please enter the project id" >
             <el-option
               v-for="item in projectIds"
               :key="item.projectId"
@@ -144,8 +142,8 @@
         </el-form-item>
 
 
-        <el-form-item label="用户" prop="userId">
-          <el-select v-model="form.userId" placeholder="请选择用户" clearable filterable>
+        <el-form-item label="user" prop="userId">
+          <el-select v-model="form.userId" placeholder="Please select the user" clearable filterable>
             <el-option
               v-for="item in userList"
               :key="item.userId"
@@ -154,21 +152,21 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="用户角色" prop="role">
-          <el-input v-model="form.role" placeholder="请输入用户角色" />
+        <el-form-item label="User Role" prop="role">
+          <el-input v-model="form.role" placeholder="Please enter the user role" />
         </el-form-item>
-        <el-form-item label="用户加入项目时间" prop="joinedAt">
+        <el-form-item label="User project join date" prop="joinedAt">
           <el-date-picker clearable
             v-model="form.joinedAt"
             type="date"
             value-format="yyyy-MM-dd"
-            placeholder="请选择用户加入项目时间">
+            placeholder="Please enter the project join date">
           </el-date-picker>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="submitForm">确 定</el-button>
-        <el-button @click="cancel">取 消</el-button>
+        <el-button type="primary" @click="submitForm">submit</el-button>
+        <el-button @click="cancel">cancel</el-button>
       </div>
     </el-dialog>
   </div>
@@ -218,18 +216,6 @@ export default {
       form: {},
       // 表单校验
       rules: {
-        projectId: [
-          { required: true, message: "项目不能为空", trigger: "change" }
-        ],
-        userId: [
-          { required: true, message: "用户不能为空", trigger: "change" }
-        ],
-        role: [
-          { required: true, message: "用户角色不能为空", trigger: "blur" }
-        ],
-        joinedAt: [
-          { required: true, message: "加入时间不能为空", trigger: "change" }
-        ]
       }
     };
   },
@@ -301,7 +287,7 @@ export default {
       const now = new Date();
       this.form.joinedAt = this.parseTime(now, '{y}-{m}-{d}');
       this.open = true;
-      this.title = "添加项目成员管理";
+      this.title = "Add Member";
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
@@ -312,7 +298,7 @@ export default {
       getP_members(memberId).then(response => {
         this.form = response.data;
         this.open = true;
-        this.title = "修改项目成员管理";
+        this.title = "Update Member";
       });
     },
     /** 提交按钮 */
@@ -321,13 +307,13 @@ export default {
         if (valid) {
           if (this.form.memberId != null) {
             updateP_members(this.form).then(response => {
-              this.$modal.msgSuccess("修改成功");
+              this.$modal.msgSuccess("Successfully Updated");
               this.open = false;
               this.getList();
             });
           } else {
             addP_members(this.form).then(response => {
-              this.$modal.msgSuccess("新增成功");
+              this.$modal.msgSuccess("Successfully Added");
               this.open = false;
               this.getList();
             });
@@ -338,11 +324,11 @@ export default {
     /** 删除按钮操作 */
     handleDelete(row) {
       const memberIds = row.memberId || this.ids;
-      this.$modal.confirm('是否确认删除项目成员管理编号为"' + memberIds + '"的数据项？').then(function() {
+      this.$modal.confirm('Confirm delete member #' + memberIds + '?').then(function() {
         return delP_members(memberIds);
       }).then(() => {
         this.getList();
-        this.$modal.msgSuccess("删除成功");
+        this.$modal.msgSuccess("Successfully Deleted");
       }).catch(() => {});
     },
     /** 导出按钮操作 */

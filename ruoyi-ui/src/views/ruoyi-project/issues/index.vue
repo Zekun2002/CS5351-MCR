@@ -306,8 +306,8 @@ export default {
       // 用于存放获取的用户id列表
       userIds:[],
       // 用于所有的问题类型
-      issueTypes:[{label:"Bug",value:"Bug"},{label:"技术债务",value:"技术债务"}],
-      statusTypes:[{label:"待办",value:"待办"},{label:"进行中",value:"进行中"},{label:"已解决",value:"已解决"}]
+      issueTypes:[{label:"Bug",value:"Bug"},{label:"debt",value:"debt"}],
+      statusTypes:[{label:"Backlog ",value:"Backlog "},{label:"Current ",value:"Current "},{label:"Resolved",value:"Resolved"}]
     };
   },
   created() {

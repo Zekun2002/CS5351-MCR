@@ -1,57 +1,57 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="项目名称" prop="projectName">
+    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" >
+      <el-form-item label="Project Name" prop="projectName">
         <el-input
           v-model="queryParams.projectName"
-          placeholder="请输入项目名称"
+          placeholder="Please enter the project name"
           clearable
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="项目开始日期" prop="startDate">
+      <el-form-item label="Project Started Time" prop="startDate">
         <el-date-picker clearable
           v-model="queryParams.startDate"
           type="date"
           value-format="yyyy-MM-dd"
-          placeholder="请选择项目开始日期">
+          placeholder="Please enter the started time">
         </el-date-picker>
       </el-form-item>
-      <el-form-item label="项目预计结束日期" prop="endDate">
+      <el-form-item label="Expected End Time" prop="endDate">
         <el-date-picker clearable
           v-model="queryParams.endDate"
           type="date"
           value-format="yyyy-MM-dd"
-          placeholder="请选择项目预计结束日期">
+          placeholder="Please select the expected end time">
         </el-date-picker>
       </el-form-item>
-      <el-form-item label="创建者id" prop="createdBy">
+      <el-form-item label="Creator ID" prop="createdBy">
         <el-input
           v-model="queryParams.createdBy"
-          placeholder="请输入创建者id"
+          placeholder="Please enter the creator id"
           clearable
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="项目创建时间" prop="createdAt">
+      <el-form-item label="Created Time" prop="createdAt">
         <el-date-picker clearable
           v-model="queryParams.createdAt"
           type="date"
           value-format="yyyy-MM-dd"
-          placeholder="请选择项目创建时间">
+          placeholder="Please enter the created time">
         </el-date-picker>
       </el-form-item>
-      <el-form-item label="项目更新时间" prop="updatedAt">
+      <el-form-item label="Updated Time" prop="updatedAt">
         <el-date-picker clearable
           v-model="queryParams.updatedAt"
           type="date"
           value-format="yyyy-MM-dd"
-          placeholder="请选择项目更新时间">
+          placeholder="Please enter the updated time">
         </el-date-picker>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
-        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">search</el-button>
+        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">reset</el-button>
       </el-form-item>
     </el-form>
 
@@ -64,7 +64,7 @@
           size="mini"
           @click="handleAdd"
           v-hasPermi="['ruoyi-project:project:add']"
-        >新增</el-button>
+        >add</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -75,7 +75,7 @@
           :disabled="single"
           @click="handleUpdate"
           v-hasPermi="['ruoyi-project:project:edit']"
-        >修改</el-button>
+        >update</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -86,7 +86,7 @@
           :disabled="multiple"
           @click="handleDelete"
           v-hasPermi="['ruoyi-project:project:remove']"
-        >删除</el-button>
+        >delete</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -96,38 +96,38 @@
           size="mini"
           @click="handleExport"
           v-hasPermi="['ruoyi-project:project:export']"
-        >导出</el-button>
+        >export</el-button>
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
     <el-table v-loading="loading" :data="projectList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="项目id" align="center" prop="projectId" />
-      <el-table-column label="项目名称" align="center" prop="projectName" />
-      <el-table-column label="项目描述" align="center" prop="description" />
-      <el-table-column label="项目开始日期" align="center" prop="startDate" width="180">
+      <el-table-column label="project id" align="center" prop="projectId" />
+      <el-table-column label="project name" align="center" prop="projectName" />
+      <el-table-column label="description" align="center" prop="description" />
+      <el-table-column label="started time" align="center" prop="startDate" width="180">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.startDate, '{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="项目预计结束日期" align="center" prop="endDate" width="180">
+      <el-table-column label="expected end time" align="center" prop="endDate" width="180">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.endDate, '{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="创建者id" align="center" prop="createdBy" />
-      <el-table-column label="项目创建时间" align="center" prop="createdAt" width="180">
+      <el-table-column label="creator id" align="center" prop="createdBy" />
+      <el-table-column label="created time" align="center" prop="createdAt" width="180">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.createdAt, '{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="项目更新时间" align="center" prop="updatedAt" width="180">
+      <el-table-column label="updated time" align="center" prop="updatedAt" width="180">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.updatedAt, '{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <el-table-column label="operation" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
             size="mini"
@@ -135,14 +135,14 @@
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
             v-hasPermi="['ruoyi-project:project:edit']"
-          >修改</el-button>
+          >update</el-button>
           <el-button
             size="mini"
             type="text"
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
             v-hasPermi="['ruoyi-project:project:remove']"
-          >删除</el-button>
+          >delete</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -158,30 +158,30 @@
     <!-- 添加或修改项目管理对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="项目名称" prop="projectName">
-          <el-input v-model="form.projectName" placeholder="请输入项目名称" />
+        <el-form-item label="project name" prop="projectName">
+          <el-input v-model="form.projectName" placeholder="please enter the project name" />
         </el-form-item>
-        <el-form-item label="项目描述" prop="description">
-          <el-input v-model="form.description" type="textarea" placeholder="请输入内容" />
+        <el-form-item label="description" prop="description">
+          <el-input v-model="form.description" type="textarea" placeholder="please enter the content" />
         </el-form-item>
-        <el-form-item label="项目开始日期" prop="startDate">
+        <el-form-item label="started time" prop="startDate">
           <el-date-picker clearable
             v-model="form.startDate"
             type="date"
             value-format="yyyy-MM-dd"
-            placeholder="请选择项目开始日期">
+            placeholder="please enter the started time">
           </el-date-picker>
         </el-form-item>
-        <el-form-item label="项目预计结束日期" prop="endDate">
+        <el-form-item label="expected end time" prop="endDate">
           <el-date-picker clearable
             v-model="form.endDate"
             type="date"
             value-format="yyyy-MM-dd"
-            placeholder="请选择项目预计结束日期">
+            placeholder="please enter the expected end time">
           </el-date-picker>
         </el-form-item>
-        <el-form-item label="创建者" prop="createdBy">
-          <el-select v-model="form.createdBy" placeholder="请选择创建者" clearable filterable>
+        <el-form-item label="creator" prop="createdBy">
+          <el-select v-model="form.createdBy" placeholder="please select the creator" clearable filterable>
             <el-option
               v-for="item in userList"
               :key="item.userId"
@@ -190,26 +190,26 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="项目创建时间" prop="createdAt">
+        <el-form-item label="created time" prop="createdAt">
           <el-date-picker clearable
             v-model="form.createdAt"
             type="date"
             value-format="yyyy-MM-dd"
-            placeholder="请选择项目创建时间">
+            placeholder="please enter the created time">
           </el-date-picker>
         </el-form-item>
-        <el-form-item label="项目更新时间" prop="updatedAt">
+        <el-form-item label="updated time" prop="updatedAt">
           <el-date-picker clearable
             v-model="form.updatedAt"
             type="date"
             value-format="yyyy-MM-dd"
-            placeholder="请选择项目更新时间">
+            placeholder="please enter the updated time">
           </el-date-picker>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="submitForm">确 定</el-button>
-        <el-button @click="cancel">取 消</el-button>
+        <el-button type="primary" @click="submitForm">submit</el-button>
+        <el-button @click="cancel">cancel</el-button>
       </div>
     </el-dialog>
   </div>
@@ -224,48 +224,6 @@ export default {
   data() {
     // 日期验证函数
     const validateStartDate = (rule, value, callback) => {
-      if (!value) {
-        callback();
-        return;
-      }
-      if (this.form.endDate && value > this.form.endDate) {
-        callback(new Error('项目开始日期不能晚于预计结束日期'));
-      } else {
-        callback();
-      }
-    };
-    const validateEndDate = (rule, value, callback) => {
-      if (!value) {
-        callback();
-        return;
-      }
-      if (this.form.startDate && value < this.form.startDate) {
-        callback(new Error('项目预计结束日期不能早于开始日期'));
-      } else {
-        callback();
-      }
-    };
-    const validateCreatedAt = (rule, value, callback) => {
-      if (!value) {
-        callback();
-        return;
-      }
-      if (this.form.updatedAt && value > this.form.updatedAt) {
-        callback(new Error('项目创建时间不能晚于更新时间'));
-      } else {
-        callback();
-      }
-    };
-    const validateUpdatedAt = (rule, value, callback) => {
-      if (!value) {
-        callback();
-        return;
-      }
-      if (this.form.createdAt && value < this.form.createdAt) {
-        callback(new Error('项目更新时间不能早于创建时间'));
-      } else {
-        callback();
-      }
     };
     
     return {
@@ -305,24 +263,7 @@ export default {
       form: {},
       // 表单校验
       rules: {
-        projectName: [
-          { required: true, message: "项目名称不能为空", trigger: "blur" }
-        ],
-        startDate: [
-          { validator: validateStartDate, trigger: "change" }
-        ],
-        endDate: [
-          { validator: validateEndDate, trigger: "change" }
-        ],
-        createdAt: [
-          { validator: validateCreatedAt, trigger: "change" }
-        ],
-        updatedAt: [
-          { validator: validateUpdatedAt, trigger: "change" }
-        ],
-        createdBy: [
-          { required: true, message: "创建者不能为空", trigger: "change" }
-        ]
+        
       }
     };
   },
@@ -390,7 +331,7 @@ export default {
       this.form.createdAt = this.parseTime(now, '{y}-{m}-{d}');
       this.form.updatedAt = this.parseTime(now, '{y}-{m}-{d}');
       this.open = true;
-      this.title = "添加项目管理";
+      this.title = "add project management";
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
@@ -403,7 +344,7 @@ export default {
         const now = new Date();
         this.form.updatedAt = this.parseTime(now, '{y}-{m}-{d}');
         this.open = true;
-        this.title = "修改项目管理";
+        this.title = "update project management";
       });
     },
     /** 提交按钮 */
@@ -412,13 +353,13 @@ export default {
         if (valid) {
           if (this.form.projectId != null) {
             updateProject(this.form).then(response => {
-              this.$modal.msgSuccess("修改成功");
+              this.$modal.msgSuccess("successfully updated");
               this.open = false;
               this.getList();
             });
           } else {
             addProject(this.form).then(response => {
-              this.$modal.msgSuccess("新增成功");
+              this.$modal.msgSuccess("successfully added");
               this.open = false;
               this.getList();
             });
@@ -429,11 +370,11 @@ export default {
     /** 删除按钮操作 */
     handleDelete(row) {
       const projectIds = row.projectId || this.ids;
-      this.$modal.confirm('是否确认删除项目管理编号为"' + projectIds + '"的数据项？').then(function() {
+      this.$modal.confirm('confirm to delelte project #' + projectIds + '?').then(function() {
         return delProject(projectIds);
       }).then(() => {
         this.getList();
-        this.$modal.msgSuccess("删除成功");
+        this.$modal.msgSuccess("successfully deleted");
       }).catch(() => {});
     },
     /** 导出按钮操作 */

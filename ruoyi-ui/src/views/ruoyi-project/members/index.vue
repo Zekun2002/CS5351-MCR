@@ -198,12 +198,6 @@ export default {
       form: {},
       // 表单校验
       rules: {
-        taskId: [
-          { required: true, message: "任务ID不能为空", trigger: "blur" }
-        ],
-        userId: [
-          { required: true, message: "用户ID不能为空", trigger: "blur" }
-        ],
       },
       taskIds:[],
       userIds:[]

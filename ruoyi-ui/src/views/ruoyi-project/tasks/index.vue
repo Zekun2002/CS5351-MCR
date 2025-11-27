@@ -309,8 +309,8 @@ export default {
       projectIds:[],
       createdByIds:[],
       assignedToIds:[],
-      statusTypes:[{label:"待办",value:"待办"},{label:"进行中",value:"进行中"},{label:"已完成",value:"已完成"}],
-      priorityTypes:[{label:"高",value:"高"},{label:"中",value:"中"},{label:"低",value:"低"}]
+      statusTypes:[{label:"Backlog",value:"Backlog"},{label:"Current ",value:"Current "},{label:"Resolved",value:"Resolved"}],
+      priorityTypes:[{label:"high",value:"high"},{label:"middle",value:"middle"},{label:"low",value:"low"}]
     };
   },
   created() {
