@@ -100,9 +100,9 @@ public class ProjectMembersController extends BaseController
     {
         // 检查当前用户是否为该项目的PM
         Long userId = SecurityUtils.getUserId();
-        if (projectMembers.getProjectId() != null && !projectMembersService.isProjectPM(userId, projectMembers.getProjectId())) {
-            return error("只有项目PM才能修改项目成员");
-        }
+//        if (projectMembers.getProjectId() != null && !projectMembersService.isProjectPM(userId, projectMembers.getProjectId())) {
+//            return error("只有项目PM才能修改项目成员");
+//        }
         return toAjax(projectMembersService.updateProjectMembers(projectMembers));
     }
 
@@ -118,11 +118,11 @@ public class ProjectMembersController extends BaseController
         Long userId = SecurityUtils.getUserId();
         for (Long memberId : memberIds) {
             ProjectMembers member = projectMembersService.selectProjectMembersByMemberId(memberId);
-            if (member != null && member.getProjectId() != null) {
-                if (!projectMembersService.isProjectPM(userId, member.getProjectId())) {
-                    return error("只有项目PM才能删除项目成员");
-                }
-            }
+//            if (member != null && member.getProjectId() != null) {
+//                if (!projectMembersService.isProjectPM(userId, member.getProjectId())) {
+//                    return error("只有项目PM才能删除项目成员");
+//                }
+//            }
         }
         return toAjax(projectMembersService.deleteProjectMembersByMemberIds(memberIds));
     }
