@@ -11,7 +11,7 @@
  Target Server Version : 80400 (8.4.0)
  File Encoding         : 65001
 
- Date: 24/11/2025 19:28:41
+ Date: 28/11/2025 11:52:40
 */
 
 SET NAMES utf8mb4;
@@ -33,11 +33,13 @@ CREATE TABLE `tasks`  (
   `created_at` datetime NULL DEFAULT NULL COMMENT '任务创建时间',
   `updated_at` datetime NULL DEFAULT NULL COMMENT '任务更新时间',
   PRIMARY KEY (`task_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '任务表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '任务表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of tasks
 -- ----------------------------
-INSERT INTO `tasks` VALUES (1, 1, '测试任务', '', '高', '已完成', 1, 1, '2025-11-10 00:00:00', '2025-11-13 00:00:00');
+INSERT INTO `tasks` VALUES (1, 1, 'task 1', 'none', 'high', NULL, 1, 2, '2025-11-25 12:23:01', '2025-11-25 12:23:04');
+INSERT INTO `tasks` VALUES (2, 2, 'task2', 'none', 'high', NULL, 1, 2, '2025-11-25 12:23:32', '2025-11-25 12:23:35');
+INSERT INTO `tasks` VALUES (3, 3, 'task 3', 'none', 'high', NULL, 1, 2, '2025-11-25 12:23:48', '2025-11-25 12:23:51');
 
 SET FOREIGN_KEY_CHECKS = 1;
