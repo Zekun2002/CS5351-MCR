@@ -269,22 +269,6 @@ export default {
       form: {},
       // 表单校验
       rules: {
-        projectId: [
-          { required: true, message: "项目不能为空", trigger: "change" }
-        ],
-        reportDate: [
-          { required: true, message: "报告日期不能为空", trigger: "change" }
-        ],
-        progress: [
-          { required: true, message: "项目进度不能为空", trigger: "change" },
-          { type: 'number', min: 0, max: 100, message: "进度必须在0-100之间", trigger: "change" }
-        ],
-        expectedEndDate: [
-          { validator: validateExpectedEndDate, trigger: "change" }
-        ],
-        actualEndDate: [
-          { validator: validateActualEndDate, trigger: "change" }
-        ]
       },
       // 是否禁用项目进度条
       isDisabled:true
