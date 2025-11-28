@@ -11,7 +11,7 @@
  Target Server Version : 80400 (8.4.0)
  File Encoding         : 65001
 
- Date: 24/11/2025 19:29:01
+ Date: 28/11/2025 11:52:33
 */
 
 SET NAMES utf8mb4;
@@ -32,11 +32,13 @@ CREATE TABLE `issues`  (
   `created_at` datetime NULL DEFAULT NULL COMMENT '问题创建时间',
   `updated_at` datetime NULL DEFAULT NULL COMMENT '问题更新时间',
   PRIMARY KEY (`issue_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '问题表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '问题表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of issues
 -- ----------------------------
-INSERT INTO `issues` VALUES (1, 1, 1, 'test', '无', '已解决', 1, '2025-11-10 00:00:00', '2025-11-10 00:00:00');
+INSERT INTO `issues` VALUES (1, 1, 1, 'Bug', 'none', 'in progress', 1, '2025-11-27 11:51:26', '2025-11-27 11:51:26');
+INSERT INTO `issues` VALUES (2, 2, 2, 'Bug', 'none', 'in progress', 1, '2025-11-27 11:51:26', '2025-11-27 11:51:26');
+INSERT INTO `issues` VALUES (3, 3, 3, 'Bug', 'none', 'in progress', 1, '2025-11-27 11:51:26', '2025-11-27 11:51:26');
 
 SET FOREIGN_KEY_CHECKS = 1;
