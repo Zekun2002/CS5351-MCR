@@ -190,12 +190,7 @@
                 <version>${ruoyi.version}</version>
             </dependency>
 
-            <!-- 代码生成-->
-            <dependency>
-                <groupId>com.ruoyi</groupId>
-                <artifactId>ruoyi-generator</artifactId>
-                <version>${ruoyi.version}</version>
-            </dependency>
+            
 
             <!-- 核心模块-->
             <dependency>
@@ -234,15 +229,13 @@
     </dependencyManagement>
 
     <modules>
-        <module>ruoyi-admin</module>
-        <module>ruoyi-framework</module>
-        <module>ruoyi-system</module>
-        <module>ruoyi-quartz</module>
-        <module>ruoyi-generator</module>
-        <module>ruoyi-common</module>
-        <module>ruoyi-project</module>
-        <module>ruoyi-progress</module>
-        <!--        <module>ruoyi-project</module>-->
+        <module>pms-admin</module>
+        <module>pms-framework</module>
+        <module>pms-system</module>
+        <module>pms-quartz</module>
+        <module>pms-common</module>
+        <module>pms-project</module>
+        <module>pms-progress</module>
     </modules>
     <packaging>pom</packaging>
 
