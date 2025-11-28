@@ -80,9 +80,13 @@ public class ProjectMembersController extends BaseController
     {
         // 检查当前用户是否为该项目的PM
         Long userId = SecurityUtils.getUserId();
-        if (projectMembers.getProjectId() != null && !projectMembersService.isProjectPM(userId, projectMembers.getProjectId())) {
-            return error("只有项目PM才能添加项目成员");
-        }
+
+        System.out.println("项目成员代码："+projectMembers.getProjectId());
+        System.out.println("用户代码："+userId);
+//        if (projectMembers.getProjectId() != null && !projectMembersService.isProjectPM(userId, projectMembers.getProjectId())) {
+//            System.out.println("failed");
+//            return error("只有项目PM才能添加项目成员");
+//        }
         return toAjax(projectMembersService.insertProjectMembers(projectMembers));
     }
 
